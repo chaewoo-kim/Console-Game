@@ -3,19 +3,11 @@ import java.util.Map;
 
 public class Items {
 
-    public class Item {
-        String name;
-        int cost;
-
-        public Item(String name, int cost) {
-            this.name = name;
-            this.cost = cost;
-        }
-    }
-
     Map<Integer, Item> weapon = new HashMap<>();
     Map<Integer, Item> armor = new HashMap<>();
     Map<Integer, Item> supplies = new HashMap<>();
+
+    Map<Integer, Map<Integer, Item>> allItems = new HashMap<>();
 
     public Items() {
         weapon.put(1, new Item("시작", 3));
@@ -34,7 +26,11 @@ public class Items {
         armor.put(6, new Item("마법사 히든무기", 8));
         armor.put(7, new Item("궁수 히든무기", 8));
 
+        supplies.put(1, new Item("hp 회복 물약", 2));
+        supplies.put(2, new Item("mp 회복 물약", 2));
 
-        this.supplies = supplies;
+        allItems.put(1, weapon);
+        allItems.put(2, armor);
+        allItems.put(3, supplies);
     }
 }
