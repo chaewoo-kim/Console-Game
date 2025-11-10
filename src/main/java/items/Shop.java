@@ -1,4 +1,11 @@
+package items;
+
+import user.Player;
+
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 public class Shop {
 
@@ -37,6 +44,27 @@ public class Shop {
             System.out.println(item);
         });
     }
+
+//    public void sell(Player player) {
+//
+//        Item[] playerItems = {items.armor.get(1), items.weapon.get(2), items.supplies.get(2)}; // 나중에 player.items로 바꿔야함
+//        Scanner sc = new Scanner(System.in);
+//
+//        int money = 5; // 이거 나중에 player.money로 바꿔야 함
+//        String itemName = "";
+//
+//        Arrays.stream(playerItems).forEach(item -> {
+//            System.out.println("이름: " + item.getName() + ", 판매 가격: " + item.getCost());
+//        });
+//
+//        System.out.print("판매할 아이템의 이름: ");
+//        itemName = sc.nextLine();
+//
+//        // 받은 아이템 이름 비교해서 돈 빼기
+//        // 돈 없으면 못 쓰게
+//        // 알림 문구 출력
+//
+//    }
 
     public static void main(String[] args) {
         Shop shop = new Shop();
