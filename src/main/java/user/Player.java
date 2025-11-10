@@ -11,9 +11,15 @@ public class Player {
     private String skill;
     private int mp;
     private int maxMp;
+    private int cost;
+    private List<Item> itemList;            // -> 고유 아이템 리스트
+    private List<Item> weapons;
+    private List<Item> armors;
+    private List<Item> supplies;        // -> 소모품
+    private List<Item> inventory; // -> 인벤토리
 
     public Player(String name) {  // -> 1층에서는 기본적으로 모험가 직업을가짐.
-        this.name = name;          //
+        this.name = name;
         this.level = 1;
         this.hp = 100;
         this.maxHp = 100;
@@ -21,6 +27,42 @@ public class Player {
         this.maxMp = 50;
         this.job = Job.ADVENTURER;
         this.skill = null;
+        this.cost = 0;
+        this.itemList = new ArrayList<>();
+        this.weapons = new ArrayList<>();
+        this.armors = new ArrayList<>();
+        this.supplies = new ArrayList<>();
+        this.inventory = new ArrayList<>();
+    }
+
+
+
+    // ->  물약 사용 시 체력 완전 회복
+    public void usePotion() {
+        this.hp = this.maxHp;
+        System.out.println(name + "의 HP가 " + maxHp + "로 회복되었습니다.");
+    }
+
+    // -> 아이템 추가 메서드(무기, 장비, 소모품 구분)
+    public void addItem(Item item) {
+        inventory.add(item); //  -> 인벤토리 전체에 무조건 추가
+        switch (item.getType()) {
+            case WEAPON:
+                weapons.add(item);
+                break;
+            case ARMOR:
+                armors.add(item);
+                break;
+            case SUPPLY:
+                supplies.add(item);
+                break;
+            case UNIQUE:
+                itemList.add(item);
+                break;
+        }
+    }
+    public void Inventory(){
+
     }
 
     public void chooseJob(Job newJob) {     // -> 2층에서 직업정하기.
@@ -30,16 +72,25 @@ public class Player {
                 maxHp = 130;
                 maxMp = 20;
                 skill = "대가리뽀사기";
+                Item warriorWeapon = new Item("전사 기본무기", 2, ItemType.WEAPON);
+                weapons.add(warriorWeapon);
+                System.out.println("전사 직업 전용 무기 착용: " + warriorWeapon.getName());
                 break;
             case ARCHER:
                 maxHp = 110;
                 maxMp = 30;
                 skill = "주몽 원샷";
+                Item archerWeapon = new Item("궁수 기본무기", 4, ItemType.WEAPON);
+                weapons.add(archerWeapon);
+                System.out.println("궁수 직업 전용 무기 착용: " + archerWeapon.getName());
                 break;
             case MAGE:
                 maxHp = 90;
                 maxMp = 50;
                 skill = "아이스 에이지";
+                Item mageWeapon = new Item("마법사 기본무기", 3, ItemType.WEAPON);
+                weapons.add(mageWeapon);
+                System.out.println("마법사 직업 전용 무기 착용: " + mageWeapon.getName());
                 break;
             default:
                 break;
@@ -55,17 +106,26 @@ public class Player {
                 case WARRIOR:
                     this.job = Job.DRAGON_WOO;
                     this.skill = "용의 콧물";
+                    Item dragonWooWeapon = new Item("드래곤 우 히든무기", 5, ItemType.WEAPON);
+                    weapons.add(dragonWooWeapon);
                     System.out.println("히든직업 드래곤 우로 업그레이드!");
+                    System.out.println("히든직업 전용 무기 착용: " + dragonWooWeapon.getName());
                     break;
                 case ARCHER:
                     this.job = Job.CHAEU_CHOW;
                     this.skill = "그의 눈빛";
+                    Item chaeuChowWeapon = new Item("채우차우 히든무기", 7, ItemType.WEAPON);
+                    weapons.add(chaeuChowWeapon);
                     System.out.println("히든직업 채우차우로 업그레이드!");
+                    System.out.println("히든직업 전용 무기 착용: " + chaeuChowWeapon.getName());
                     break;
                 case MAGE:
                     this.job = Job.LEE_SANGJUN;
                     this.skill = "배꼽 탈취";
+                    Item leeSangjunWeapon = new Item("이상준 히든무기", 6, ItemType.WEAPON);
+                    weapons.add(leeSangjunWeapon);
                     System.out.println("히든직업 개그맨 이상준으로 업그레이드!");
+                    System.out.println("히든직업 전용 무기 착용: " + leeSangjunWeapon.getName());
                     break;
                 default:
                     break;
@@ -74,6 +134,36 @@ public class Player {
             System.out.println("히든직업 업그레이드 실패. 기존 직업 유지.");
         }
     }
+
+    // -> 무기 착용 해제 및 인벤토리로 되돌리기
+    public void unequipWeapon(Item weapon) {
+        if (weapons.remove(weapon)) {   // 착용 무기  제거
+            inventory.add(weapon);      // 인벤토리로 이동
+            System.out.println(weapon.getName() + " 무기를 착용 해제하고 인벤토리로 이동했습니다.");
+        } else {
+            System.out.println("해당 무기를 착용하고 있지 않습니다.");
+        }
+    }
+
+    // -> 방어구 착용 해제 및 인벤토리로 되돌리기
+    public void unequipArmor(Item armor) {
+        if (armors.remove(armor)) {
+            inventory.add(armor);
+            System.out.println(armor.getName() + " 방어구를 착용 해제하고 인벤토리로 이동했습니다.");
+        } else {
+            System.out.println("해당 방어구를 착용하고 있지 않습니다.");
+        }
+    }
+
+    // -> 인벤토리에서 아이템 삭제(예: 판매, 소비 시)
+    public void removeFromInventory(Item item) {
+        if (inventory.remove(item)) {
+            System.out.println(item.getName() + " 아이템을 인벤토리에서 삭제했습니다.");
+        } else {
+            System.out.println("해당 아이템이 인벤토리에 없습니다.");
+        }
+    }
+
 
     public void useSkill() {        //      -> 스킬을 콘솔에 출력(콘솔효과 정할 수 있음).
         if (skill != null) {
@@ -93,7 +183,7 @@ public class Player {
             System.out.println("스킬: " + skill);
         }
     }
-}
+
 
     public String getName() {
         return name;
@@ -157,5 +247,54 @@ public class Player {
 
     public void setMaxMp(int maxMp) {
         this.maxMp = maxMp;
+    }
+
+    // -> item getter, setter
+
+    public List<Item> getItemList() {
+        return itemList;
+    }
+
+    public void setItemList(List<Item> itemList) {
+        this.itemList = itemList;
+    }
+
+    public List<Item> getWeapons() {
+        return weapons;
+    }
+
+    public void setWeapons(List<Item> weapons) {
+        this.weapons = weapons;
+    }
+
+    public List<Item> getArmors() {
+        return armors;
+    }
+
+    public void setArmors(List<Item> armors) {
+        this.armors = armors;
+    }
+    public List<Item> getSupplies() {
+        return supplies;
+    }
+
+    public void setSupplies(List<Item> supplies) {
+        this.supplies = supplies;
+    }
+
+    public List<Item> getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(List<Item> inventory) {
+        this.inventory = inventory;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
     }
 }
