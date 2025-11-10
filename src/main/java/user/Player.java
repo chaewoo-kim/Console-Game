@@ -61,8 +61,16 @@ public class Player {
                 break;
         }
     }
-    public void Inventory(){
-
+    
+    public void Inventory() {
+        System.out.println("===== " + name + "의 인벤토리 =====");
+        if (inventory.isEmpty()) {
+            System.out.println("인벤토리가 비어 있습니다.");
+        } else {
+            for (Item item : inventory) {
+                System.out.println("- " + item.getName() + " (가격: " + item.getCost() + ")");
+            }
+        }
     }
 
     public void chooseJob(Job newJob) {     // -> 2층에서 직업정하기.
@@ -297,4 +305,7 @@ public class Player {
     public void setCost(int cost) {
         this.cost = cost;
     }
+
+
+
 }
