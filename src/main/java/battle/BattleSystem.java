@@ -8,10 +8,12 @@ import java.util.Scanner;
 public class BattleSystem {
     private Player player;
     private Monster monster;
+    private int stage;
 
-    public BattleSystem(Player player, Monster monster) {
+    public BattleSystem(Player player, Monster monster, int stage) {
         this.player = player;
         this.monster = monster;
+        this.stage = stage;
     }
 
     public void startBattle() {
