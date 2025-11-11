@@ -116,20 +116,23 @@ public class Shop {
         if (isSell) {
             System.out.println("**** 상점 판매는 한 번만 가능합니다 ****");
             return player;
+        } else {
+            isSell = true;
         }
 
-        List<Item> playItemList = new ArrayList<>(
-                Arrays.asList(
-                        items.weapon.get(1),
-                        items.armor.get(3),
-                        items.supplies.get(1)
-                )
-        );
+        List<List<Item>> playItemList = new ArrayList<>();
+        playItemList.add(player.getItemList());
+        playItemList.add(player.getWeapons());
+        playItemList.add(player.getArmors());
+        playItemList.add(player.getSupplies());
+        playItemList.add(player.getInventory());
 
-        int money = 5; // 이거 나중에 player.money로 바꿔야 함
+        int money = player.getCost();
         int input = -1;
-        String itemName = "";
-        int itemCost = 0;
+//        String itemName = "";
+//        int itemCost = 0;
+        int itemInput = 0;
+        int categoryNum = 0;
         int itemNum = 0;
 
         while (input != 0) {
@@ -142,38 +145,55 @@ public class Shop {
             System.out.println("현재 돈: " + money);
 
             for (int i = 0; i < playItemList.size(); i++) {
-                System.out.println("아이템 번호: " + i);
-                System.out.println("아이템 이름: " + playItemList.get(i).getName());
-                System.out.println("아이템 가격: " + playItemList.get(i).getCost());
+                for (int j = 0; j < playItemList.get(i).size(); j++) {
+                    System.out.println("아이템 번호: " + (j+i));
+                    System.out.println("아이템 이름: " + playItemList.get(i).get(j).getName());
+                    System.out.println("아이템 가격: " + playItemList.get(i).get(j).getCost());
+                }
             }
 
             System.out.print("판매할 아이템의 번호: ");
-            itemNum = sc.nextInt();
-            itemName = playItemList.get(itemNum).getName();
+            itemInput = sc.nextInt();
+            categoryNum = itemInput / playItemList.size();
+            itemNum = itemInput % playItemList.size();
+//            itemName = playItemList.get(categoryNum).get(itemNum).getName();
 
-            for (Map.Entry<Integer, Item> entry : items.weapon.entrySet()) {
-                if (entry.getValue().getName().equals(itemName)) {
-                    itemCost = entry.getValue().getCost();
-                    break;
-                }
+//            for (Map.Entry<Integer, Item> entry : items.weapon.entrySet()) {
+//                if (entry.getValue().getName().equals(itemName)) {
+//                    itemCost = entry.getValue().getCost();
+//                    break;
+//                }
+//            }
+//
+//            for (Map.Entry<Integer, Item> entry : items.armor.entrySet()) {
+//                if (entry.getValue().getName().equals(itemName)) {
+//                    itemCost = entry.getValue().getCost();
+//                    break;
+//                }
+//            }
+//
+//            for (Map.Entry<Integer, Item> entry : items.supplies.entrySet()) {
+//                if (entry.getValue().getName().equals(itemName)) {
+//                    itemCost = entry.getValue().getCost();
+//                    break;
+//                }
+//            }
+
+//            playItemList.remove(itemNum);
+            playItemList.get(categoryNum).remove(itemNum);
+            switch (categoryNum) {
+                case 0:
+                    player.setItemList(playItemList.get(categoryNum)); break;
+                case 1:
+                    player.setWeapons(playItemList.get(categoryNum)); break;
+                case 2:
+                    player.setArmors(playItemList.get(categoryNum)); break;
+                case 3:
+                    player.setSupplies(playItemList.get(categoryNum)); break;
+                case 4:
+                    player.setInventory(playItemList.get(categoryNum)); break;
             }
-
-            for (Map.Entry<Integer, Item> entry : items.armor.entrySet()) {
-                if (entry.getValue().getName().equals(itemName)) {
-                    itemCost = entry.getValue().getCost();
-                    break;
-                }
-            }
-
-            for (Map.Entry<Integer, Item> entry : items.supplies.entrySet()) {
-                if (entry.getValue().getName().equals(itemName)) {
-                    itemCost = entry.getValue().getCost();
-                    break;
-                }
-            }
-
-            playItemList.remove(itemNum);
-            money += itemCost;
+            player.setCost(money + playItemList.get(categoryNum).get(itemNum).getCost());
             System.out.println("판매 완료");
             System.out.println("추가 판매: 1, 판매 종료: 0");
             System.out.print("입력: ");
@@ -181,7 +201,6 @@ public class Shop {
 
         }
 
-        // Player 객체에 돈 업데이트 해야함
         return player;
     }
 
