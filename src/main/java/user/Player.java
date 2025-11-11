@@ -1,5 +1,10 @@
 package user;
 
+import items.Item;
+import items.ItemType;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Player {
@@ -61,7 +66,7 @@ public class Player {
                 break;
         }
     }
-    
+
     public void Inventory() {
         System.out.println("===== " + name + "의 인벤토리 =====");
         if (inventory.isEmpty()) {

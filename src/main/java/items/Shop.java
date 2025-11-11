@@ -32,6 +32,7 @@ public class Shop {
             System.out.println(mainOutput);
             System.out.print("입력: ");
             input = sc.nextInt();
+            sc.nextLine();
 
             switch (input) {
                 case 1:
@@ -116,20 +117,21 @@ public class Shop {
         if (isSell) {
             System.out.println("**** 상점 판매는 한 번만 가능합니다 ****");
             return player;
+        } else {
+            isSell = true;
         }
 
-        List<Item> playItemList = new ArrayList<>(
-                Arrays.asList(
-                        items.weapon.get(1),
-                        items.armor.get(3),
-                        items.supplies.get(1)
-                )
-        );
+        List<List<Item>> playItemList = new ArrayList<>();
+        playItemList.add(player.getItemList());
+        playItemList.add(player.getWeapons());
+        playItemList.add(player.getArmors());
+        playItemList.add(player.getSupplies());
 
-        int money = 5; // 이거 나중에 player.money로 바꿔야 함
+        int money = player.getCost();
         int input = -1;
         String itemName = "";
-        int itemCost = 0;
+        int itemInput = 0;
+        int categoryNum = 0;
         int itemNum = 0;
 
         while (input != 0) {
@@ -141,55 +143,87 @@ public class Shop {
 
             System.out.println("현재 돈: " + money);
 
+            int count = 0;
             for (int i = 0; i < playItemList.size(); i++) {
-                System.out.println("아이템 번호: " + i);
-                System.out.println("아이템 이름: " + playItemList.get(i).getName());
-                System.out.println("아이템 가격: " + playItemList.get(i).getCost());
-            }
-
-            System.out.print("판매할 아이템의 번호: ");
-            itemNum = sc.nextInt();
-            itemName = playItemList.get(itemNum).getName();
-
-            for (Map.Entry<Integer, Item> entry : items.weapon.entrySet()) {
-                if (entry.getValue().getName().equals(itemName)) {
-                    itemCost = entry.getValue().getCost();
-                    break;
+                if (playItemList.get(i).isEmpty()) continue;
+                for (int j = 0; j < playItemList.get(i).size(); j++) {
+                    System.out.println("아이템 번호: " + (count));
+                    System.out.println("아이템 이름: " + playItemList.get(i).get(j).getName());
+                    System.out.println("아이템 가격: " + playItemList.get(i).get(j).getCost());
+                    count++;
+                    System.out.println("=========================");
                 }
             }
 
-            for (Map.Entry<Integer, Item> entry : items.armor.entrySet()) {
-                if (entry.getValue().getName().equals(itemName)) {
-                    itemCost = entry.getValue().getCost();
-                    break;
+            System.out.print("판매할 아이템의 이름: ");
+            itemName = sc.nextLine();
+
+            for (int i = 0; i < playItemList.size(); i++) {
+                if (playItemList.get(i).isEmpty()) continue;
+                for (int j = 0; j < playItemList.get(i).size(); j++) {
+                    if (playItemList.get(i).get(j).getName().equals(itemName)) {
+                        switch (i) {
+                            case 0:
+                                player.setCost(player.getCost() + playItemList.get(i).get(j).getCost());
+                                player.getItemList().remove(playItemList.get(i).get(j));
+                                break;
+                            case 1:
+                                player.setCost(player.getCost() + playItemList.get(i).get(j).getCost());
+                                player.getWeapons().remove(playItemList.get(i).get(j));
+                                break;
+                            case 2:
+                                player.setCost(player.getCost() + playItemList.get(i).get(j).getCost());
+                                player.getArmors().remove(playItemList.get(i).get(j));
+                                break;
+                            case 3:
+                                player.setCost(player.getCost() + playItemList.get(i).get(j).getCost());
+                                player.getSupplies().remove(playItemList.get(i).get(j));
+                                break;
+                            default:
+                                break;
+                        }
+                        System.out.println("판매 완료");
+                        System.out.println("현재 보유 금액: " + player.getCost());
+                        break;
+                    }
                 }
             }
 
-            for (Map.Entry<Integer, Item> entry : items.supplies.entrySet()) {
-                if (entry.getValue().getName().equals(itemName)) {
-                    itemCost = entry.getValue().getCost();
-                    break;
-                }
-            }
-
-            playItemList.remove(itemNum);
-            money += itemCost;
-            System.out.println("판매 완료");
             System.out.println("추가 판매: 1, 판매 종료: 0");
             System.out.print("입력: ");
             input = sc.nextInt();
+            sc.nextLine();
 
         }
 
-        // Player 객체에 돈 업데이트 해야함
         return player;
     }
 
     public static void main(String[] args) {
         Shop shop = new Shop();
         Player player = new Player("chaewookim");
-//        shop.buy(player);
-//        shop.sell(player);
+        Items items = new Items();
+
+        System.out.println("시작 전");
+        System.out.println(player.getItemList());
+        System.out.println(player.getWeapons());
+        System.out.println(player.getArmors());
+        System.out.println(player.getSupplies());
+        System.out.println("***************");
+
+        player.addItem(items.weapon.get(1));
+        player.addItem(items.weapon.get(2));
+        player.addItem(items.weapon.get(3));
+        player.addItem(items.armor.get(2));
+        player.addItem(items.armor.get(3));
+        player.addItem(items.supplies.get(1));
+        player.addItem(items.supplies.get(2));
+
         shop.mainStream(player);
+        System.out.println("시작 후 **************");
+        System.out.println(player.getItemList());
+        System.out.println(player.getWeapons());
+        System.out.println(player.getArmors());
+        System.out.println(player.getSupplies());
     }
 }
