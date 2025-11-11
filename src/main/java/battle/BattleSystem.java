@@ -21,8 +21,7 @@ public class BattleSystem {
         //2~3번을 몬스터가 죽을 때까지 반복
         while(monster.isAlive()) {
             performMonsterAttack();
-            System.out.println("====================================================");
-            //TODO:player의 피가 0이 되면 종료
+            if (player.getHp() <= 0) break;
             performPlayerTurn();
             System.out.println("====================================================");
 
@@ -37,7 +36,7 @@ public class BattleSystem {
         int n=monster.getSkills().length;
         String skillUsed = monster.getSkills()[(int)(Math.random()*n)];
         System.out.println(monster.getName() + "의 " + skillUsed + " 사용!");
-        monster.takeDamage(monster.getDamage());
+        player.setHp(player.getHp() - monster.getDamage());
         player.printStatus();
         monster.printStatus();
     }
