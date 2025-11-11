@@ -1,6 +1,7 @@
 package user;
 
 import items.Item;
+import items.ItemType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,8 @@ public class Player {
     private List<Item> armors;
     private List<Item> supplies;        // -> 소모품
     private List<Item> inventory; // -> 인벤토리
+
+    public Player(){}
 
     public Player(String name) {  // -> 1층에서는 기본적으로 모험가 직업을가짐.
         this.name = name;
@@ -65,6 +68,7 @@ public class Player {
                 break;
         }
     }
+
     public void Inventory() {
         System.out.println("===== " + name + "의 인벤토리 =====");
         if (inventory.isEmpty()) {
@@ -308,4 +312,7 @@ public class Player {
     public void setCost(int cost) {
         this.cost = cost;
     }
+
+
+
 }

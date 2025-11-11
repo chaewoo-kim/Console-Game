@@ -23,25 +23,31 @@ public class BattleSystem {
         //2~3번을 몬스터가 죽을 때까지 반복
         while(monster.isAlive()) {
             performMonsterAttack();
-            //TODO:player의 피가 0이 되면 종료
+            if (player.getHp() <= 0) break;
             performPlayerTurn();
-        }
+            System.out.println("====================================================");
 
+        }
         displayBattleResult();
     }
 
     private void performMonsterAttack() {
         //2. 몬스터 공격
         monster.printStatus();
+        player.printStatus();
         int n=monster.getSkills().length;
         String skillUsed = monster.getSkills()[(int)(Math.random()*n)];
         System.out.println(monster.getName() + "의 " + skillUsed + " 사용!");
+        player.setHp(player.getHp() - monster.getDamage());
         player.printStatus();
+        monster.printStatus();
     }
 
     private void performPlayerTurn() {
         //3. 사람 공격
         Scanner scanner = new Scanner(System.in);
+        player.printStatus();
+        monster.printStatus();
         System.out.println("1. 공격 , 2. 물약회복");
         //3-1. mp소모 공격
         int choice = scanner.nextInt();
