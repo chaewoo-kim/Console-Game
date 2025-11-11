@@ -23,6 +23,8 @@ public class Player {
     private List<Item> supplies;        // -> 소모품
     private List<Item> inventory; // -> 인벤토리
 
+    public Player(){}
+
     public Player(String name) {  // -> 1층에서는 기본적으로 모험가 직업을가짐.
         this.name = name;
         this.level = 1;
