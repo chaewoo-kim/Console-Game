@@ -1,6 +1,7 @@
 package user;
 
 import items.Item;
+import items.ItemType;
 
 import java.util.ArrayList;
 import java.util.List;

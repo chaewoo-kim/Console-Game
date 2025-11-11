@@ -3,12 +3,12 @@ package items;
 public class Item {
     String name;
     int cost;
-    String type;
+    ItemType itemType;
 
-    public Item(String name, int cost, String type) {
+    public Item(String name, int cost, ItemType itemType) {
         this.name = name;
         this.cost = cost;
-        this.type = type;
+        this.itemType = itemType;
     }
 
     @Override
@@ -16,7 +16,6 @@ public class Item {
         return "Item{" +
                 "name='" + name + '\'' +
                 ", cost=" + cost +
-                ", type='" + type + '\'' +
                 '}';
     }
 
@@ -36,11 +35,11 @@ public class Item {
         this.cost = cost;
     }
 
-    public String getType() {
-        return type;
+    public ItemType getType() {
+        return itemType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setType(ItemType itemType) {
+        this.itemType = itemType;
     }
 }
