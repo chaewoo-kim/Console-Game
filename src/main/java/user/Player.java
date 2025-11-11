@@ -93,7 +93,7 @@ public class Player {
             System.out.println("스킬: " + skill);
         }
     }
-}
+
 
     public String getName() {
         return name;
