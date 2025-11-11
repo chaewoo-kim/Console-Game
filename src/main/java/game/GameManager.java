@@ -40,10 +40,16 @@ public class GameManager {
         while(stage <= 5) {
             System.out.println("\n현재 스테이지: " + stage);
             progressStage();
+            if (player.getHp() <= 0) {
+                System.out.println("게임 종료");
+                break;
+            }
             stage++;
+            if (stage == 6) {
+                System.out.println("모든 스테이지 완료! 게임 종료.");
+                break;
+            }
         }
-
-        System.out.println("모든 스테이지 완료! 게임 종료.");
     }
 
     private void progressStage() {
@@ -56,20 +62,24 @@ public class GameManager {
             case 2:
                 battleSystem = new BattleSystem(player, new Floor2Boss(), stage);
                 battleSystem.startBattle();
+                if (player.getHp() <= 0) break;
                 handleJobSelection();
                 break;
             case 3:
                 battleSystem = new BattleSystem(player, new Floor3Boss(), stage);
                 battleSystem.startBattle();
+                if (player.getHp() <= 0) break;
                 handleHiddenUpgrade();
                 break;
             case 4:
                 battleSystem = new BattleSystem(player, new Floor3Boss(), stage);
                 battleSystem.startBattle();
+                if  (player.getHp() <= 0) break;
                 break;
             default:
                 battleSystem = new BattleSystem(player, new Floor3Boss(), stage);
                 battleSystem.startBattle();
+                if  (player.getHp() <= 0) break;
                 System.out.println(stage + "층: 스테이지 진행 중...");
                 break;
         }
