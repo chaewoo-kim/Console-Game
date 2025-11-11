@@ -47,6 +47,9 @@ public class Shop {
             }
         }
 
+        isBuy = false;
+        isSell = false;
+
     }
 
     public void buy(Player player) {
@@ -218,36 +221,6 @@ public class Shop {
 
         }
     }
-
-//    public static void main(String[] args) {
-//        Shop shop = new Shop();
-//        Player player = new Player("chaewookim");
-//        Items items = new Items();
-//
-//        System.out.println("시작 전");
-//        System.out.println(player.getItemList());
-//        System.out.println(player.getWeapons());
-//        System.out.println(player.getArmors());
-//        System.out.println(player.getSupplies());
-//        System.out.println(player.getInventory());
-//        System.out.println("***************");
-//
-//        player.addItem(items.weapon.get(1));
-//        player.addItem(items.weapon.get(2));
-//        player.addItem(items.weapon.get(3));
-//        player.addItem(items.armor.get(2));
-//        player.addItem(items.armor.get(3));
-//        player.addItem(items.supplies.get(1));
-//        player.addItem(items.supplies.get(2));
-//
-//        shop.mainStream(player);
-//        System.out.println("시작 후 **************");
-//        System.out.println(player.getItemList());
-//        System.out.println(player.getWeapons());
-//        System.out.println(player.getArmors());
-//        System.out.println(player.getSupplies());
-//        System.out.println(player.getInventory());
-//    }
 
     public void startShop(Player player) {
         mainStream(player);
