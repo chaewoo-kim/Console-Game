@@ -3,11 +3,13 @@ package items;
 
 import user.Player;
 
+import javax.swing.*;
 import java.util.*;
 
 public class Shop {
 
     Items items = new Items();
+    List<Item> itemForBuy = new LinkedList<>();
     Scanner sc = new Scanner(System.in);
 
     String mainOutput = """
@@ -30,6 +32,7 @@ public class Shop {
 
         while (input != 0) {
             System.out.println(mainOutput);
+            System.out.println("현재 보유 금액: " + player.getCost());
             System.out.print("입력: ");
             input = sc.nextInt();
             sc.nextLine();
@@ -46,20 +49,18 @@ public class Shop {
 
     }
 
-    public Player buy(Player player) {
+    public void buy(Player player) {
 
         if (isBuy) {
             System.out.println("**** 상점 구매는 한 번만 이용 가능합니다 ****");
-            return player;
+            return;
         } else {
             isBuy = true;
         }
 
-        List<Item> itemForBuy = new LinkedList<>();
-
         int categoryNum = 0;
         int itemNum = 0;
-        int money = 10; // Player.money로 변경
+        int money = player.getCost();
         int input = -1;
 
         for (int i = 0; i < 4; i++) {
@@ -81,6 +82,7 @@ public class Shop {
                 System.out.println("**** 구매할 수 있는 물건 없음 ****");
                 break;
             }
+            System.out.println("현재 보유 금액: " + player.getCost());
 
             for (int i = 0; i < itemForBuy.size(); i++) {
                 System.out.println("****" +
@@ -89,34 +91,44 @@ public class Shop {
                         "가격: " + itemForBuy.get(i).getCost()
                 );
             }
+            System.out.println("****번호: -1 / 구매 종료");
             System.out.println("****");
 
-            System.out.print("구매할 물건의 번호를 입력: ");
-            input = sc.nextInt();
+            try {
 
-            if (itemForBuy.get(input).getCost() > money) {
-                System.out.println("**** 금액 부족 ****");
-                break;
-            } else {
-                System.out.println("**** 구매 완료 ****");
-                money -= itemForBuy.get(input).getCost();
-//                player.inventory.add(itemForBuy.get(input)); -> player 인벤토리에 추가
-                itemForBuy.remove(input);
+                System.out.print("구매할 물건의 번호를 입력: ");
+                input = sc.nextInt();
+
+                if (input == -1) break;
+
+                if (itemForBuy.get(input).getCost() > money) {
+                    System.out.println("**** 금액 부족 ****");
+                    continue;
+                } else {
+                    System.out.println("**** 구매 완료 ****");
+                    player.setCost(money -  itemForBuy.get(input).getCost());
+                    player.getInventory().add(itemForBuy.get(input));
+                    itemForBuy.remove(input);
+                }
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("올바른 값을 입력하시오");
+                continue;
+            } catch (InputMismatchException e) {
+                System.out.println("올바른 값을 입력하시오");
+                continue;
             }
 
             System.out.println("**** 계속 구매: 1 / 구매 종료: 0 ****");
             System.out.print("입력: ");
             input = sc.nextInt();
         }
-
-        return player;
     }
 
-    public Player sell(Player player) {
+    public void sell(Player player) {
 
         if (isSell) {
             System.out.println("**** 상점 판매는 한 번만 가능합니다 ****");
-            return player;
+            return;
         } else {
             isSell = true;
         }
@@ -147,16 +159,20 @@ public class Shop {
             for (int i = 0; i < playItemList.size(); i++) {
                 if (playItemList.get(i).isEmpty()) continue;
                 for (int j = 0; j < playItemList.get(i).size(); j++) {
-                    System.out.println("아이템 번호: " + (count));
-                    System.out.println("아이템 이름: " + playItemList.get(i).get(j).getName());
-                    System.out.println("아이템 가격: " + playItemList.get(i).get(j).getCost());
+                    System.out.println("아이템 번호: " + (count) +
+                        " / 아이템 이름: " + playItemList.get(i).get(j).getName() +
+                        " / 아이템 가격: " + playItemList.get(i).get(j).getCost()
+                    );
                     count++;
                     System.out.println("=========================");
                 }
             }
+            System.out.println("번호: -1 / 판매 종료");
 
             System.out.print("판매할 아이템의 이름: ");
             itemName = sc.nextLine();
+
+            if (itemName.equals("-1")) break;
 
             for (int i = 0; i < playItemList.size(); i++) {
                 if (playItemList.get(i).isEmpty()) continue;
@@ -191,12 +207,16 @@ public class Shop {
 
             System.out.println("추가 판매: 1, 판매 종료: 0");
             System.out.print("입력: ");
-            input = sc.nextInt();
-            sc.nextLine();
+            try {
+                input = sc.nextInt();
+                sc.nextLine();
+            } catch (InputMismatchException e) {
+                System.out.println("올바른 값을 입력하시오");
+                sc.nextLine();
+                continue;
+            }
 
         }
-
-        return player;
     }
 
     public static void main(String[] args) {
@@ -209,6 +229,7 @@ public class Shop {
         System.out.println(player.getWeapons());
         System.out.println(player.getArmors());
         System.out.println(player.getSupplies());
+        System.out.println(player.getInventory());
         System.out.println("***************");
 
         player.addItem(items.weapon.get(1));
@@ -225,5 +246,6 @@ public class Shop {
         System.out.println(player.getWeapons());
         System.out.println(player.getArmors());
         System.out.println(player.getSupplies());
+        System.out.println(player.getInventory());
     }
 }
