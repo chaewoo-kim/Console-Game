@@ -82,6 +82,7 @@ public class Player {
 
     public void chooseJob(Job newJob) {     // -> 2층에서 직업정하기.
         this.job = newJob;
+
         switch (newJob) {
             case WARRIOR:
                 maxHp = 130;
@@ -117,6 +118,13 @@ public class Player {
     public void HiddenUpgrade() {       // -> 3층에서 50%확률로 히든직업을 얻을 수 있고, 스킬이 업그레이드 된다.
         Random rand = new Random();
         if (rand.nextBoolean()) { // -> 50% 확률: nextBoolean()은 true 또는 false를 랜덤으로 반환한다.
+
+            // ->  히든직업으로 업그레이드되면 기존 착용하던 무기는 인벤토리로 들어간다.
+            List<Item> currentWeapons = new ArrayList<>(weapons);
+            for (Item weapon : currentWeapons) {
+                unequipWeapon(weapon);
+            }
+
             switch (this.job) {
                 case WARRIOR:
                     this.job = Job.DRAGON_WOO;
@@ -143,7 +151,8 @@ public class Player {
                     System.out.println("히든직업 전용 무기 착용: " + leeSangjunWeapon.getName());
                     break;
                 default:
-                    break;
+                    System.out.println("업그레이드 가능한 직업이 아닙니다.");
+                    return;
             }
         } else {
             System.out.println("히든직업 업그레이드 실패. 기존 직업 유지.");
