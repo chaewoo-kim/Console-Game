@@ -1,5 +1,9 @@
 package game;
 
+import battle.BattleSystem;
+import monster.Floor1Boss;
+import monster.Floor2Boss;
+import monster.Floor3Boss;
 import user.Job;
 import user.Player;
 import java.util.Scanner;
@@ -19,6 +23,7 @@ public class GameManager {
     private Player player;
     private int stage;
     private Scanner scanner;
+    private BattleSystem battleSystem;
 
     public GameManager() {
         scanner = new Scanner(System.in);
@@ -45,18 +50,31 @@ public class GameManager {
         switch(stage) {
             case 1:
                 System.out.println("1층: 모험가로 시작합니다.");
+                battleSystem = new BattleSystem(player, new Floor1Boss(), stage);
+                battleSystem.startBattle();
                 break;
             case 2:
+                battleSystem = new BattleSystem(player, new Floor2Boss(), stage);
+                battleSystem.startBattle();
                 handleJobSelection();
                 break;
             case 3:
+                battleSystem = new BattleSystem(player, new Floor3Boss(), stage);
+                battleSystem.startBattle();
                 handleHiddenUpgrade();
                 break;
+            case 4:
+                battleSystem = new BattleSystem(player, new Floor3Boss(), stage);
+                battleSystem.startBattle();
+                break;
             default:
+                battleSystem = new BattleSystem(player, new Floor3Boss(), stage);
+                battleSystem.startBattle();
                 System.out.println(stage + "층: 스테이지 진행 중...");
                 break;
         }
         player.printStatus();
+
     }
 
     private void handleJobSelection() {
