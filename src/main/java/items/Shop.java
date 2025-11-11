@@ -9,7 +9,6 @@ import java.util.*;
 public class Shop {
 
     Items items = new Items();
-    List<Item> itemForBuy = new LinkedList<>();
     Scanner sc = new Scanner(System.in);
 
     String mainOutput = """
@@ -65,6 +64,8 @@ public class Shop {
         int itemNum = 0;
         int money = player.getCost();
         int input = -1;
+        String itemName = "";
+        List<Item> itemForBuy = new LinkedList<>();
 
         for (int i = 0; i < 4; i++) {
             categoryNum = (int) (Math.random() * 3 + 1);
@@ -97,33 +98,64 @@ public class Shop {
             System.out.println("****번호: -1 / 구매 종료");
             System.out.println("****");
 
+//            try {
+//
+//                System.out.print("구매할 물건의 번호를 입력: ");
+//                input = sc.nextInt();
+//
+//                if (input == -1) break;
+//
+//                if (itemForBuy.get(input).getCost() > money) {
+//                    System.out.println("**** 금액 부족 ****");
+//                    continue;
+//                } else {
+//                    System.out.println("**** 구매 완료 ****");
+//                    player.setCost(money -  itemForBuy.get(input).getCost());
+//                    player.getInventory().add(itemForBuy.get(input));
+//                    itemForBuy.remove(input);
+//                }
+//            } catch (IndexOutOfBoundsException e) {
+//                System.out.println("올바른 값을 입력하시오");
+//                continue;
+//            } catch (InputMismatchException e) {
+//                System.out.println("올바른 값을 입력하시오");
+//                continue;
+//            }
+
             try {
 
-                System.out.print("구매할 물건의 번호를 입력: ");
-                input = sc.nextInt();
+                System.out.print("구매할 물건의 이름을 입력: ");
+                itemName = sc.nextLine();
 
-                if (input == -1) break;
+                if (itemName.equals("-1")) return;
 
-                if (itemForBuy.get(input).getCost() > money) {
-                    System.out.println("**** 금액 부족 ****");
-                    continue;
-                } else {
-                    System.out.println("**** 구매 완료 ****");
-                    player.setCost(money -  itemForBuy.get(input).getCost());
-                    player.getInventory().add(itemForBuy.get(input));
-                    itemForBuy.remove(input);
+                for (int i = 1; i <= items.allItems.size(); i++) {
+                    if (items.allItems.get(i) == null) continue;
+                    for (int j = 1; j <= items.allItems.get(i).size(); j++) {
+                        if (items.allItems.get(i).get(j).getName().equals(itemName)) {
+                            if (items.allItems.get(i).get(j).getCost() > money) {
+                                System.out.println("**** 금액 부족 ****");
+                                return;
+                            } else {
+                                System.out.println("**** 구매 완료 ****");
+                                player.setCost(money -  items.allItems.get(i).get(j).getCost());
+                                player.getInventory().add(items.allItems.get(i).get(j));
+                                itemForBuy.remove(items.allItems.get(i).get(j));
+                                break;
+                            }
+                        }
+                    }
                 }
-            } catch (IndexOutOfBoundsException e) {
+            } catch(IndexOutOfBoundsException e) {
                 System.out.println("올바른 값을 입력하시오");
-                continue;
-            } catch (InputMismatchException e) {
+            } catch(InputMismatchException e) {
                 System.out.println("올바른 값을 입력하시오");
-                continue;
             }
 
             System.out.println("**** 계속 구매: 1 / 구매 종료: 0 ****");
             System.out.print("입력: ");
             input = sc.nextInt();
+            sc.nextLine();
         }
     }
 
