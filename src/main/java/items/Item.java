@@ -5,6 +5,9 @@ public class Item {
     int cost;
     ItemType itemType;
 
+    public Item() {
+    }
+
     public Item(String name, int cost, ItemType itemType) {
         this.name = name;
         this.cost = cost;
@@ -17,6 +20,14 @@ public class Item {
                 "name='" + name + '\'' +
                 ", cost=" + cost +
                 '}';
+    }
+
+    public Item getRandomItem(){
+        Items items = new Items();
+        int l=items.allItems.size();//3
+        int r=(int)(Math.random()*l);//0~3
+        int rr=(int)(Math.random()*(items.allItems.get(r).size()));
+        return items.allItems.get(r).get(r);
     }
 
     public String getName() {
