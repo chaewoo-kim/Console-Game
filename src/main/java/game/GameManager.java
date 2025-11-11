@@ -2,9 +2,7 @@ package game;
 
 import battle.BattleSystem;
 import items.Shop;
-import monster.Floor1Boss;
-import monster.Floor2Boss;
-import monster.Floor3Boss;
+import monster.*;
 import user.Job;
 import user.Player;
 import java.util.Scanner;
@@ -78,13 +76,13 @@ public class GameManager {
                 shop.startShop(player);
                 break;
             case 4:
-                battleSystem = new BattleSystem(player, new Floor3Boss(), stage);
+                battleSystem = new BattleSystem(player, new Floor4Boss(), stage);
                 battleSystem.startBattle();
                 if  (player.getHp() <= 0) break;
                 shop.startShop(player);
                 break;
             default:
-                battleSystem = new BattleSystem(player, new Floor3Boss(), stage);
+                battleSystem = new BattleSystem(player, new Floor5Boss(), stage);
                 battleSystem.startBattle();
                 if  (player.getHp() <= 0) break;
                 shop.startShop(player);
