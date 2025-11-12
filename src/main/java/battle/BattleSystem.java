@@ -10,11 +10,13 @@ public class BattleSystem {
     private Player player;
     private Monster monster;
     private int stage;
+    private boolean playerStunned;
 
     public BattleSystem(Player player, Monster monster, int stage) {
         this.player = player;
         this.monster = monster;
         this.stage = stage;
+        this.playerStunned = false;
     }
 
     public void startBattle() {
@@ -25,9 +27,13 @@ public class BattleSystem {
         while(monster.isAlive()) {
             performMonsterAttack();
             if (player.getHp() <= 0) break;
-            performPlayerTurn();
+            if (!playerStunned) {
+                performPlayerTurn();
+            }else{
+                System.out.println(player.getName()+"은 아직 잠에서 깨어나지 못 했습니다...");
+                playerStunned = false;
+            }
             System.out.println("====================================================");
-
         }
         displayBattleResult();
     }
@@ -38,16 +44,11 @@ public class BattleSystem {
         player.printStatus();
         int n=monster.getSkills().length;
         String skillUsed = monster.getSkills()[(int)(Math.random()*n)];
-        if(skillUsed.equals("섹시 보이스")){
-            System.out.println(monster.getName()+"의 "+skillUsed+"사용! ");
-            System.out.println();
-            System.out.println(player.getName()+"은 잠이 들어버렸다..!");
-            System.out.println();
-            //TODO:한턴 쉬는거 구현
-
-
-        }else {
-            System.out.println(monster.getName() + "의 " + skillUsed + " 사용!");
+        System.out.println(monster.getName() + "의 " + skillUsed + " 사용!");
+        // 섹시 보이스 스킬인 경우 특별 처리
+        if(skillUsed.equals("섹시 보이스")) {
+            restBattle();
+            return; // 데미지는 주지 않고 기절 효과만
         }
         player.setHp(player.getHp() - monster.getDamage());
         player.printStatus();
@@ -81,5 +82,13 @@ public class BattleSystem {
             System.out.println("승리했습니다!");
             new ItemAcquire(player,stage);
         }
+    }
+
+    private void restBattle(){
+        System.out.println();
+        System.out.println(player.getName()+"은 잠이 들어버렸다..!");
+        playerStunned = true;
+        player.printStatus();
+        monster.printStatus();
     }
 }
