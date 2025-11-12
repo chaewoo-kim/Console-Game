@@ -13,7 +13,7 @@ public class Shop {
 
     String mainOutput = """
             **** 상점 도착. 구매 혹은 판매 선택 ****
-            **** 구매: 1 / 판매: 2 / 나가기: 0 ****
+            **** 구매: 1 / 판매: 2 / 장비창: 3 / 인벤토리: 4 / 나가기: 0 ****
             """;
     String buyOutput = """
             **** 구매 가능한 아이템 ****
@@ -41,6 +41,8 @@ public class Shop {
                     buy(player); break;
                 case 2:
                     sell(player); break;
+                case 3:
+                    equipment(player); break;
                 default:
                     System.out.println("**** 올바른 숫자를 입력하시오 ****"); break;
             }
@@ -255,6 +257,21 @@ public class Shop {
     }
 
     public void equipment(Player player) {
+
+        int input = 0;
+
+        while (input != -1) {
+            // player 객체의 weapon, armor 출력
+            System.out.println("**** 착용 장비 ****");
+            if (player.getWeapons().isEmpty()) System.out.println("**** 무기: 없음 ****");
+            else System.out.println("**** 무기: " + player.getWeapons().get(0).getName() + " ****");
+            if (player.getArmors().isEmpty()) System.out.println("**** 방어구: 없음 ****");
+            else System.out.println("**** 방어구: " + player.getArmors().get(0).getName() + " ****");
+
+            System.out.println("**** 나가기: -1 ****");
+            System.out.print("입력: ");
+            input = sc.nextInt();
+        }
 
     }
 
