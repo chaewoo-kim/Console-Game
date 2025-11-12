@@ -180,9 +180,16 @@ public class Player {
     }
 
 
+
+
     public void useSkill() {        //      -> 스킬을 콘솔에 출력(콘솔효과 정할 수 있음).
         if (skill != null) {
-            System.out.println(name + "의 스킬 발동: " + skill);
+            if (mp >= cost) { // -> MP가 충분할 때만 스킬 사용 가능
+                mp -= cost;   // -> MP 소모
+                System.out.println(name + "의 스킬 발동: " + skill + " (MP -" + cost + ", 남은 MP: " + mp + ")");
+            } else {
+                System.out.println(name + "의 MP가 부족하여 스킬을 사용할 수 없습니다. (필요 MP: " + cost + ", 현재 MP: " + mp + ")");
+            }
         } else {
             System.out.println("스킬 없음");
         }
