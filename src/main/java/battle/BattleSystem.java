@@ -1,5 +1,6 @@
 package battle;
 
+import acquire.ItemAcquire;
 import monster.Monster;
 import user.Player;
 
@@ -68,6 +69,7 @@ public class BattleSystem {
             System.out.println("패배했습니다...");
         } else {
             System.out.println("승리했습니다!");
+            new ItemAcquire(player,stage);
         }
     }
 }
