@@ -254,6 +254,14 @@ public class Shop {
         }
     }
 
+    public void equipment(Player player) {
+
+    }
+
+    public void inventory(Player player) {
+
+    }
+
     public void startShop(Player player) {
         mainStream(player);
     }
