@@ -38,7 +38,17 @@ public class BattleSystem {
         player.printStatus();
         int n=monster.getSkills().length;
         String skillUsed = monster.getSkills()[(int)(Math.random()*n)];
-        System.out.println(monster.getName() + "의 " + skillUsed + " 사용!");
+        if(skillUsed.equals("섹시 보이스")){
+            System.out.println(monster.getName()+"의 "+skillUsed+"사용! ");
+            System.out.println();
+            System.out.println(player.getName()+"은 잠이 들어버렸다..!");
+            System.out.println();
+            //TODO:한턴 쉬는거 구현
+
+
+        }else {
+            System.out.println(monster.getName() + "의 " + skillUsed + " 사용!");
+        }
         player.setHp(player.getHp() - monster.getDamage());
         player.printStatus();
         monster.printStatus();

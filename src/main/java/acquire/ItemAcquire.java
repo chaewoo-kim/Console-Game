@@ -49,7 +49,7 @@ public class ItemAcquire extends Item{
                 player.addItem(item2);
                 System.out.println("************************************");
                 System.out.println();
-                System.out.print("*\t"+item.getName()+", "+item2.getName()+", 수상한 카드키, 200골드 획득!"+"\t*");
+                System.out.print("*\t"+item.getName()+", "+item2.getName()+", 200골드 획득!"+"\t*");
                 System.out.println();
                 System.out.println("************************************");
                 break;
@@ -61,7 +61,7 @@ public class ItemAcquire extends Item{
                 player.addItem(item2);
                 System.out.println("************************************");
                 System.out.println();
-                System.out.print("*\t"+item.getName()+", "+item2.getName()+", 수상한 카드키, 200골드 획득!"+"\t*");
+                System.out.print("*\t"+item.getName()+", "+item2.getName()+", 200골드 획득!"+"\t*");
                 System.out.println();
                 System.out.println("************************************");
                 break;
@@ -73,7 +73,7 @@ public class ItemAcquire extends Item{
                 player.addItem(item2);
                 System.out.println("************************************");
                 System.out.println();
-                System.out.print("*\t"+item.getName()+", "+item2.getName()+", 수상한 카드키, 200골드 획득!"+"\t*");
+                System.out.print("*\t"+item.getName()+", "+item2.getName()+", 200골드 획득!"+"\t*");
                 System.out.println();
                 System.out.println("************************************");
                 break;
