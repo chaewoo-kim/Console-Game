@@ -43,6 +43,8 @@ public class Shop {
                     sell(player); break;
                 case 3:
                     equipment(player); break;
+                case 4:
+                    inventory(player); break;
                 default:
                     System.out.println("**** 올바른 숫자를 입력하시오 ****"); break;
             }
@@ -271,11 +273,33 @@ public class Shop {
             System.out.println("**** 나가기: -1 ****");
             System.out.print("입력: ");
             input = sc.nextInt();
+            sc.nextLine();
         }
 
     }
 
     public void inventory(Player player) {
+
+        // while문 안에서 사용자에게 -1 받지 않는 이상
+        // player 객체의 inventory 전부 출력
+        int input = 0;
+
+        while (input != -1) {
+            System.out.println("**** 인벤토리 ****");
+            if (player.getInventory().isEmpty()) {
+                System.out.println("**** 비어있음 ****");
+            } else {
+                for (int i = 0; i < player.getInventory().size(); i++) {
+                    player.getInventory().stream().forEach(item -> {
+                        System.out.println("**** " + item.getName() + " / " + item.getCost() + "원" + " ****");
+                    });
+                }
+            }
+            System.out.println("**** 나가기: -1 ****");
+            System.out.print("입력: ");
+            input = sc.nextInt();
+            sc.nextLine();
+        }
 
     }
 
