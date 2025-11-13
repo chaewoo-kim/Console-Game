@@ -301,7 +301,7 @@ public class Shop {
         // while문 안에서 사용자에게 -1 받지 않는 이상
         // player 객체의 inventory 전부 출력
         int input = 0;
-
+        String equipInput = "";
         while (input != -1) {
             System.out.println("**** 인벤토리 ****");
             if (player.getInventory().isEmpty()) {
@@ -309,8 +309,16 @@ public class Shop {
             } else {
                 for (int i = 0; i < player.getInventory().size(); i++) {
                     player.getInventory().stream().forEach(item -> {
-                        System.out.println("**** " + item.getName() + " / " + item.getCost() + "원" + " ****");
+                        System.out.println("**** " + item.getName() + " / " + item.getCost() + "원"  + " ****");
                     });
+                }
+                System.out.println("**** 장비를 변경하시겠습니까? ****");
+                System.out.print("Y/N: ");
+                equipInput = sc.nextLine();
+                if (equipInput.equals("Y")) {
+                    changeEquipment(player);
+                } else {
+                    System.out.println("**** 장비를 변경하지 않습니다 ****");
                 }
             }
             System.out.println("**** 나가기: -1 ****");
@@ -319,6 +327,32 @@ public class Shop {
             sc.nextLine();
         }
 
+    }
+
+    private void changeEquipment(Player player) {
+
+        String input = "";
+        Item equipItem = null;
+        Item invenItem = null;
+
+        System.out.println("**** 착용 가능한 장비 ****");
+        player.getInventory().stream().forEach(item -> {
+            System.out.println("**** " + item.getName() + " ****");
+        });
+        System.out.print("착용할 장비의 이름을 입력: ");
+        input = sc.nextLine();
+
+        for (int i = 0; i < player.getInventory().size(); i++) {
+            if (player.getInventory().get(i).getName().equals(input)) {
+                invenItem = player.getInventory().get(i);
+            }
+        }
+
+        player.getInventory().remove(invenItem);
+        player.getWeapons().add(invenItem);
+        equipItem = player.getWeapons().get(0);
+        player.getWeapons().remove(equipItem);
+        player.getInventory().add(equipItem);
     }
 
     public void startShop(Player player) {
