@@ -177,6 +177,7 @@ public class Shop {
         playItemList.add(player.getWeapons());
         playItemList.add(player.getArmors());
         playItemList.add(player.getSupplies());
+        playItemList.add(player.getInventory());
 
         int money = player.getCost();
         int input = -1;
@@ -184,6 +185,7 @@ public class Shop {
         int itemInput = 0;
         int categoryNum = 0;
         int itemNum = 0;
+        boolean isNoWeapon = true;
 
         while (input != 0) {
 
@@ -213,10 +215,26 @@ public class Shop {
 
             if (itemName.equals("-1")) break;
 
+            OUTER_LOOP:
             for (int i = 0; i < playItemList.size(); i++) {
                 if (playItemList.get(i).isEmpty()) continue;
                 for (int j = 0; j < playItemList.get(i).size(); j++) {
                     if (playItemList.get(i).get(j).getName().equals(itemName)) {
+                        if (playItemList.get(i).get(j).getName().contains("무기")) {
+                            for (int k = 0; k < player.getInventory().size(); k++) {
+                                if (player.getInventory().get(k).getName().contains("무기")) {
+                                    isNoWeapon = false;
+                                } else {
+                                    isNoWeapon = true;
+                                }
+                            }
+                        }
+
+                        if (isNoWeapon) {
+                            System.out.println("**** 판매 후 교체할 무기가 없습니다 ****");
+                            break OUTER_LOOP;
+                        }
+
                         switch (i) {
                             case 0:
                                 player.setCost(player.getCost() + playItemList.get(i).get(j).getCost());
