@@ -2,6 +2,8 @@ package user;
 
 import items.Item;
 import items.ItemType;
+import items.Items;
+import monster.Monster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,8 @@ public class Player {
     private List<Item> supplies;        // -> 소모품
     private List<Item> inventory; // -> 인벤토리
 
+    Items items = new  Items();
+
     public Player(){}
 
     public Player(String name) {  // -> 1층에서는 기본적으로 모험가 직업을가짐.
@@ -37,7 +41,9 @@ public class Player {
         this.cost = 0;
         this.itemList = new ArrayList<>();
         this.weapons = new ArrayList<>();
+        weapons.add(items.getWeapon().get(1));
         this.armors = new ArrayList<>();
+        armors.add(items.getArmor().get(1));
         this.supplies = new ArrayList<>();
         this.inventory = new ArrayList<>();
     }
@@ -330,5 +336,13 @@ public class Player {
     }
 
 
+    public void takeDamage(Monster monster, Player player) {
+        if (player.getJob() == Job.ADVENTURER) {
+            return;
+        }
 
+        int damage = monster.getDamage() - player.getArmors().get(0).getValue();
+
+        player.setHp(player.getHp() - damage);
+    }
 }
