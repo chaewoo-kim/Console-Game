@@ -75,6 +75,15 @@ public class Player {
         }
     }
 
+    public void levelUp() {     // ->  레벨업 시 최대체력과 최대마나 일부 증가 예시
+        this.level += 1;
+        this.maxHp += 20;
+        this.maxMp += 10;
+        this.hp = maxHp;
+        this.mp = maxMp;
+        System.out.println(name + "의 레벨이 " + level + "로 상승했습니다!");
+    }
+
     public void Inventory() {
         System.out.println("===== " + name + "의 인벤토리 =====");
         if (inventory.isEmpty()) {
@@ -345,6 +354,7 @@ public class Player {
 
         player.setHp(player.getHp() - damage);
     }
+
 
     public boolean isHavePotion(Player player){
         List<Item> litem=player.getInventory();

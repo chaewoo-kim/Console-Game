@@ -59,6 +59,7 @@ public class GameManager {
                 System.out.println("1층: 모험가로 시작합니다.");
                 battleSystem = new BattleSystem(player, new Floor1Boss(), stage);
                 battleSystem.startBattle();
+                player.levelUp();
                 shop.startShop(player);
                 break;
             case 2:
@@ -66,6 +67,7 @@ public class GameManager {
                 battleSystem.startBattle();
                 if (player.getHp() <= 0) break;
                 handleJobSelection();
+                player.levelUp();
                 shop.startShop(player);
                 break;
             case 3:
@@ -73,18 +75,21 @@ public class GameManager {
                 battleSystem.startBattle();
                 if (player.getHp() <= 0) break;
                 handleHiddenUpgrade();
+                player.levelUp();
                 shop.startShop(player);
                 break;
             case 4:
                 battleSystem = new BattleSystem(player, new Floor4Boss(), stage);
                 battleSystem.startBattle();
                 if  (player.getHp() <= 0) break;
+                player.levelUp();
                 shop.startShop(player);
                 break;
             default:
                 battleSystem = new BattleSystem(player, new Floor5Boss(), stage);
                 battleSystem.startBattle();
                 if  (player.getHp() <= 0) break;
+                player.levelUp();
                 shop.startShop(player);
                 System.out.println(stage + "층: 스테이지 진행 중...");
                 break;

@@ -89,6 +89,11 @@ public class BattleSystem {
 
     }
 
+    public void clearFloor() {  // -> 층을 클리어하면 레벨 1증가하고 현재상태를 갱신한다.
+        System.out.println("층 클리어! 다음 층으로...");
+        player.levelUp();
+    }
+
     private void displayBattleResult() {
         if(monster.isAlive()) {
             System.out.println("패배했습니다...");
