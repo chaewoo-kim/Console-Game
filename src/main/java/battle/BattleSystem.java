@@ -50,7 +50,7 @@ public class BattleSystem {
             restBattle();
             return; // 데미지는 주지 않고 기절 효과만
         }
-        player.setHp(player.getHp() - monster.getDamage());
+        player.takeDamage(monster, player);
         player.printStatus();
         monster.printStatus();
     }
