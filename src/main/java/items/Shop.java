@@ -176,7 +176,7 @@ public class Shop {
         playItemList.add(player.getItemList());
         playItemList.add(player.getWeapons());
         playItemList.add(player.getArmors());
-        playItemList.add(player.getSupplies());
+//        playItemList.add(player.getSupplies());
         playItemList.add(player.getInventory());
 
         int money = player.getCost();
