@@ -345,4 +345,15 @@ public class Player {
 
         player.setHp(player.getHp() - damage);
     }
+
+    public boolean isHavePotion(Player player){
+        List<Item> litem=player.getInventory();
+        for(Item item:litem){
+            if(item.getType()==ItemType.SUPPLY){
+                litem.remove(item);
+                return true;
+            }
+        }
+        return false;
+    }
 }
