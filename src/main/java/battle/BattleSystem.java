@@ -58,6 +58,8 @@ public class BattleSystem {
     private void performPlayerTurn() {
         //3. 사람 공격
         Scanner scanner = new Scanner(System.in);
+        boolean isContinue = false;
+        do{
         player.printStatus();
         monster.printStatus();
         System.out.println("1. 공격 , 2. 물약회복");
@@ -68,11 +70,23 @@ public class BattleSystem {
             monster.takeDamage(1);
             player.printStatus();
             monster.printStatus();
+            isContinue = true;
         }else if(choice == 2) {
             //TODO:물약 소모
-            player.printStatus();
-            monster.printStatus();
-        }
+            if (player.isHavePotion(player)) {
+                //물약이 있다면
+                System.out.println("물약을 소모합니다.");
+                player.usePotion();
+                player.printStatus();
+                monster.printStatus();
+                isContinue = true;
+            } else {
+                System.out.println("물약이 없습니다.");
+
+            }
+        }if(isContinue)break;
+        }while(true);
+
     }
 
     public void clearFloor() {  // -> 층을 클리어하면 레벨 1증가하고 현재상태를 갱신한다.
