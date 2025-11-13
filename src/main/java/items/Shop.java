@@ -13,7 +13,7 @@ public class Shop {
 
     String mainOutput = """
             **** 상점 도착. 구매 혹은 판매 선택 ****
-            **** 구매: 1 / 판매: 2 / 나가기: 0 ****
+            **** 구매: 1 / 판매: 2 / 장비창: 3 / 인벤토리: 4 / 나가기: 0 ****
             """;
     String buyOutput = """
             **** 구매 가능한 아이템 ****
@@ -41,6 +41,10 @@ public class Shop {
                     buy(player); break;
                 case 2:
                     sell(player); break;
+                case 3:
+                    equipment(player); break;
+                case 4:
+                    inventory(player); break;
                 default:
                     System.out.println("**** 올바른 숫자를 입력하시오 ****"); break;
             }
@@ -92,35 +96,12 @@ public class Shop {
                 System.out.println("****" +
                         "번호: " + i + " / " +
                         "이름: " + itemForBuy.get(i).getName() + " / " +
-                        "가격: " + itemForBuy.get(i).getCost()
+                        "가격: " + itemForBuy.get(i).getCost() + " / " +
+                        "능력치: " + itemForBuy.get(i).getValue()
                 );
             }
             System.out.println("****번호: -1 / 구매 종료");
             System.out.println("****");
-
-//            try {
-//
-//                System.out.print("구매할 물건의 번호를 입력: ");
-//                input = sc.nextInt();
-//
-//                if (input == -1) break;
-//
-//                if (itemForBuy.get(input).getCost() > money) {
-//                    System.out.println("**** 금액 부족 ****");
-//                    continue;
-//                } else {
-//                    System.out.println("**** 구매 완료 ****");
-//                    player.setCost(money -  itemForBuy.get(input).getCost());
-//                    player.getInventory().add(itemForBuy.get(input));
-//                    itemForBuy.remove(input);
-//                }
-//            } catch (IndexOutOfBoundsException e) {
-//                System.out.println("올바른 값을 입력하시오");
-//                continue;
-//            } catch (InputMismatchException e) {
-//                System.out.println("올바른 값을 입력하시오");
-//                continue;
-//            }
 
             try {
 
@@ -172,7 +153,8 @@ public class Shop {
         playItemList.add(player.getItemList());
         playItemList.add(player.getWeapons());
         playItemList.add(player.getArmors());
-        playItemList.add(player.getSupplies());
+//        playItemList.add(player.getSupplies());
+        playItemList.add(player.getInventory());
 
         int money = player.getCost();
         int input = -1;
@@ -180,6 +162,7 @@ public class Shop {
         int itemInput = 0;
         int categoryNum = 0;
         int itemNum = 0;
+        boolean isNoWeapon = true;
 
         while (input != 0) {
 
@@ -194,9 +177,10 @@ public class Shop {
             for (int i = 0; i < playItemList.size(); i++) {
                 if (playItemList.get(i).isEmpty()) continue;
                 for (int j = 0; j < playItemList.get(i).size(); j++) {
-                    System.out.println("아이템 번호: " + (count) +
-                        " / 아이템 이름: " + playItemList.get(i).get(j).getName() +
-                        " / 아이템 가격: " + playItemList.get(i).get(j).getCost()
+                    System.out.println("번호: " + (count) +
+                        " / 이름: " + playItemList.get(i).get(j).getName() +
+                        " / 가격: " + playItemList.get(i).get(j).getCost() +
+                        " / 능력치: "  + playItemList.get(i).get(j).getValue()
                     );
                     count++;
                     System.out.println("=========================");
@@ -209,10 +193,26 @@ public class Shop {
 
             if (itemName.equals("-1")) break;
 
+            OUTER_LOOP:
             for (int i = 0; i < playItemList.size(); i++) {
                 if (playItemList.get(i).isEmpty()) continue;
                 for (int j = 0; j < playItemList.get(i).size(); j++) {
                     if (playItemList.get(i).get(j).getName().equals(itemName)) {
+                        if (playItemList.get(i).get(j).getName().contains("무기")) {
+                            for (int k = 0; k < player.getInventory().size(); k++) {
+                                if (player.getInventory().get(k).getName().contains("무기")) {
+                                    isNoWeapon = false;
+                                } else {
+                                    isNoWeapon = true;
+                                }
+                            }
+                        }
+
+                        if (isNoWeapon) {
+                            System.out.println("**** 판매 후 교체할 무기가 없습니다 ****");
+                            break OUTER_LOOP;
+                        }
+
                         switch (i) {
                             case 0:
                                 player.setCost(player.getCost() + playItemList.get(i).get(j).getCost());
@@ -251,6 +251,96 @@ public class Shop {
                 continue;
             }
 
+        }
+    }
+
+    public void equipment(Player player) {
+
+        int input = 0;
+
+        while (input != -1) {
+            // player 객체의 weapon, armor 출력
+            System.out.println("**** 착용 장비 ****");
+            if (player.getWeapons().isEmpty()) System.out.println("**** 무기: 없음 ****");
+            else System.out.println("**** 무기: " + player.getWeapons().get(0).getName() + " / 능력치: " + player.getWeapons().get(0).getValue() + " ****");
+            if (player.getArmors().isEmpty()) System.out.println("**** 방어구: 없음 ****");
+            else System.out.println("**** 방어구: " + player.getArmors().get(0).getName() + "/ 능력치: " + player.getArmors().get(0).getValue() + " ****");
+
+            System.out.println("**** 나가기: -1 ****");
+            System.out.print("입력: ");
+            input = sc.nextInt();
+            sc.nextLine();
+        }
+
+    }
+
+    public void inventory(Player player) {
+
+        // while문 안에서 사용자에게 -1 받지 않는 이상
+        // player 객체의 inventory 전부 출력
+        int input = 0;
+        String equipInput = "";
+        while (input != -1) {
+            System.out.println("**** 인벤토리 ****");
+            if (player.getInventory().isEmpty()) {
+                System.out.println("**** 비어있음 ****");
+            } else {
+                for (int i = 0; i < player.getInventory().size(); i++) {
+                    System.out.println("**** " + player.getInventory().get(i).getName() + " / " + player.getInventory().get(i).getCost() + "원 / " + player.getInventory().get(i).getValue() + " ****");
+                }
+                System.out.println("**** 장비를 변경하시겠습니까? ****");
+                System.out.print("Y/N: ");
+                equipInput = sc.nextLine();
+                if (equipInput.equals("Y")) {
+                    changeEquipment(player);
+                    System.out.println("**** 장비를 변경했습니다 ****");
+                } else {
+                    System.out.println("**** 장비를 변경하지 않습니다 ****");
+                    break;
+                }
+            }
+            System.out.println("**** 나가기: -1 ****");
+            System.out.print("입력: ");
+            input = sc.nextInt();
+            sc.nextLine();
+        }
+
+    }
+
+    private void changeEquipment(Player player) {
+
+        String input = "";
+        Item equipItem = null;
+        Item invenItem = null;
+
+        System.out.println("**** 착용 가능한 장비 ****");
+        player.getInventory().stream().forEach(item -> {
+            System.out.println("**** " + item.getName() + " ****");
+        });
+        System.out.print("착용할 장비의 이름을 입력: ");
+        input = sc.nextLine();
+
+        for (int i = 0; i < player.getInventory().size(); i++) {
+            if (player.getInventory().get(i).getName().equals(input)) {
+                invenItem = player.getInventory().get(i);
+            }
+        }
+
+        player.getInventory().remove(invenItem);
+
+
+        if (input.contains("무기")) {
+            player.getWeapons().add(invenItem);
+            equipItem = player.getWeapons().get(0);
+            player.getInventory().add(equipItem);
+            player.getWeapons().remove(equipItem);
+        } else if(input.contains("방어구")) {
+            player.getArmors().add(invenItem);
+            equipItem = player.getArmors().get(0);
+            player.getInventory().add(equipItem);
+            player.getArmors().remove(equipItem);
+        } else {
+            System.out.println("**** 무기와 방어구를 제외한 아이템은 장착할 수 없습니다 ****");
         }
     }
 

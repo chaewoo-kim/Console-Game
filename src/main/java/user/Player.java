@@ -2,6 +2,8 @@ package user;
 
 import items.Item;
 import items.ItemType;
+import items.Items;
+import monster.Monster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,8 @@ public class Player {
     private List<Item> supplies;        // -> 소모품
     private List<Item> inventory; // -> 인벤토리
 
+    Items items = new  Items();
+
     public Player(){}
 
     public Player(String name) {  // -> 1층에서는 기본적으로 모험가 직업을가짐.
@@ -37,7 +41,9 @@ public class Player {
         this.cost = 0;
         this.itemList = new ArrayList<>();
         this.weapons = new ArrayList<>();
+        weapons.add(items.getWeapon().get(1));
         this.armors = new ArrayList<>();
+        armors.add(items.getArmor().get(1));
         this.supplies = new ArrayList<>();
         this.inventory = new ArrayList<>();
     }
@@ -88,7 +94,7 @@ public class Player {
                 maxHp = 130;
                 maxMp = 20;
                 skill = "대가리뽀사기";
-                Item warriorWeapon = new Item("전사 기본무기", 2, ItemType.WEAPON);
+                Item warriorWeapon = new Item("전사 기본무기", 2, ItemType.WEAPON, 5);
                 weapons.add(warriorWeapon);
                 System.out.println("전사 직업 전용 무기 착용: " + warriorWeapon.getName());
                 break;
@@ -96,7 +102,7 @@ public class Player {
                 maxHp = 110;
                 maxMp = 30;
                 skill = "주몽 원샷";
-                Item archerWeapon = new Item("궁수 기본무기", 4, ItemType.WEAPON);
+                Item archerWeapon = new Item("궁수 기본무기", 4, ItemType.WEAPON, 5);
                 weapons.add(archerWeapon);
                 System.out.println("궁수 직업 전용 무기 착용: " + archerWeapon.getName());
                 break;
@@ -104,7 +110,7 @@ public class Player {
                 maxHp = 90;
                 maxMp = 50;
                 skill = "아이스 에이지";
-                Item mageWeapon = new Item("마법사 기본무기", 3, ItemType.WEAPON);
+                Item mageWeapon = new Item("마법사 기본무기", 3, ItemType.WEAPON, 5);
                 weapons.add(mageWeapon);
                 System.out.println("마법사 직업 전용 무기 착용: " + mageWeapon.getName());
                 break;
@@ -129,7 +135,7 @@ public class Player {
                 case WARRIOR:
                     this.job = Job.DRAGON_WOO;
                     this.skill = "용의 콧물";
-                    Item dragonWooWeapon = new Item("드래곤 우 히든무기", 5, ItemType.WEAPON);
+                    Item dragonWooWeapon = new Item("드래곤 우 히든무기", 5, ItemType.WEAPON, 20);
                     weapons.add(dragonWooWeapon);
                     System.out.println("히든직업 드래곤 우로 업그레이드!");
                     System.out.println("히든직업 전용 무기 착용: " + dragonWooWeapon.getName());
@@ -137,7 +143,7 @@ public class Player {
                 case ARCHER:
                     this.job = Job.CHAEU_CHOW;
                     this.skill = "그의 눈빛";
-                    Item chaeuChowWeapon = new Item("채우차우 히든무기", 7, ItemType.WEAPON);
+                    Item chaeuChowWeapon = new Item("채우차우 히든무기", 7, ItemType.WEAPON, 20);
                     weapons.add(chaeuChowWeapon);
                     System.out.println("히든직업 채우차우로 업그레이드!");
                     System.out.println("히든직업 전용 무기 착용: " + chaeuChowWeapon.getName());
@@ -145,7 +151,7 @@ public class Player {
                 case MAGE:
                     this.job = Job.LEE_SANGJUN;
                     this.skill = "배꼽 탈취";
-                    Item leeSangjunWeapon = new Item("이상준 히든무기", 6, ItemType.WEAPON);
+                    Item leeSangjunWeapon = new Item("이상준 히든무기", 6, ItemType.WEAPON, 20);
                     weapons.add(leeSangjunWeapon);
                     System.out.println("히든직업 개그맨 이상준으로 업그레이드!");
                     System.out.println("히든직업 전용 무기 착용: " + leeSangjunWeapon.getName());
@@ -189,9 +195,16 @@ public class Player {
     }
 
 
+
+
     public void useSkill() {        //      -> 스킬을 콘솔에 출력(콘솔효과 정할 수 있음).
         if (skill != null) {
-            System.out.println(name + "의 스킬 발동: " + skill);
+            if (mp >= cost) { // -> MP가 충분할 때만 스킬 사용 가능
+                mp -= cost;   // -> MP 소모
+                System.out.println(name + "의 스킬 발동: " + skill + " (MP -" + cost + ", 남은 MP: " + mp + ")");
+            } else {
+                System.out.println(name + "의 MP가 부족하여 스킬을 사용할 수 없습니다. (필요 MP: " + cost + ", 현재 MP: " + mp + ")");
+            }
         } else {
             System.out.println("스킬 없음");
         }
@@ -323,5 +336,13 @@ public class Player {
     }
 
 
+    public void takeDamage(Monster monster, Player player) {
+        if (player.getJob() == Job.ADVENTURER) {
+            return;
+        }
 
+        int damage = monster.getDamage() - player.getArmors().get(0).getValue();
+
+        player.setHp(player.getHp() - damage);
+    }
 }
