@@ -96,35 +96,12 @@ public class Shop {
                 System.out.println("****" +
                         "번호: " + i + " / " +
                         "이름: " + itemForBuy.get(i).getName() + " / " +
-                        "가격: " + itemForBuy.get(i).getCost()
+                        "가격: " + itemForBuy.get(i).getCost() + " / " +
+                        "능력치: " + itemForBuy.get(i).getValue()
                 );
             }
             System.out.println("****번호: -1 / 구매 종료");
             System.out.println("****");
-
-//            try {
-//
-//                System.out.print("구매할 물건의 번호를 입력: ");
-//                input = sc.nextInt();
-//
-//                if (input == -1) break;
-//
-//                if (itemForBuy.get(input).getCost() > money) {
-//                    System.out.println("**** 금액 부족 ****");
-//                    continue;
-//                } else {
-//                    System.out.println("**** 구매 완료 ****");
-//                    player.setCost(money -  itemForBuy.get(input).getCost());
-//                    player.getInventory().add(itemForBuy.get(input));
-//                    itemForBuy.remove(input);
-//                }
-//            } catch (IndexOutOfBoundsException e) {
-//                System.out.println("올바른 값을 입력하시오");
-//                continue;
-//            } catch (InputMismatchException e) {
-//                System.out.println("올바른 값을 입력하시오");
-//                continue;
-//            }
 
             try {
 
@@ -200,9 +177,10 @@ public class Shop {
             for (int i = 0; i < playItemList.size(); i++) {
                 if (playItemList.get(i).isEmpty()) continue;
                 for (int j = 0; j < playItemList.get(i).size(); j++) {
-                    System.out.println("아이템 번호: " + (count) +
-                        " / 아이템 이름: " + playItemList.get(i).get(j).getName() +
-                        " / 아이템 가격: " + playItemList.get(i).get(j).getCost()
+                    System.out.println("번호: " + (count) +
+                        " / 이름: " + playItemList.get(i).get(j).getName() +
+                        " / 가격: " + playItemList.get(i).get(j).getCost() +
+                        " / 능력치: "  + playItemList.get(i).get(j).getValue()
                     );
                     count++;
                     System.out.println("=========================");
@@ -284,9 +262,9 @@ public class Shop {
             // player 객체의 weapon, armor 출력
             System.out.println("**** 착용 장비 ****");
             if (player.getWeapons().isEmpty()) System.out.println("**** 무기: 없음 ****");
-            else System.out.println("**** 무기: " + player.getWeapons().get(0).getName() + " ****");
+            else System.out.println("**** 무기: " + player.getWeapons().get(0).getName() + " / 능력치: " + player.getWeapons().get(0).getValue() + " ****");
             if (player.getArmors().isEmpty()) System.out.println("**** 방어구: 없음 ****");
-            else System.out.println("**** 방어구: " + player.getArmors().get(0).getName() + " ****");
+            else System.out.println("**** 방어구: " + player.getArmors().get(0).getName() + "/ 능력치: " + player.getArmors().get(0).getValue() + " ****");
 
             System.out.println("**** 나가기: -1 ****");
             System.out.print("입력: ");
@@ -308,17 +286,17 @@ public class Shop {
                 System.out.println("**** 비어있음 ****");
             } else {
                 for (int i = 0; i < player.getInventory().size(); i++) {
-                    player.getInventory().stream().forEach(item -> {
-                        System.out.println("**** " + item.getName() + " / " + item.getCost() + "원"  + " ****");
-                    });
+                    System.out.println("**** " + player.getInventory().get(i).getName() + " / " + player.getInventory().get(i).getCost() + "원 / " + player.getInventory().get(i).getValue() + " ****");
                 }
                 System.out.println("**** 장비를 변경하시겠습니까? ****");
                 System.out.print("Y/N: ");
                 equipInput = sc.nextLine();
                 if (equipInput.equals("Y")) {
                     changeEquipment(player);
+                    System.out.println("**** 장비를 변경했습니다 ****");
                 } else {
                     System.out.println("**** 장비를 변경하지 않습니다 ****");
+                    break;
                 }
             }
             System.out.println("**** 나가기: -1 ****");
@@ -349,10 +327,21 @@ public class Shop {
         }
 
         player.getInventory().remove(invenItem);
-        player.getWeapons().add(invenItem);
-        equipItem = player.getWeapons().get(0);
-        player.getWeapons().remove(equipItem);
-        player.getInventory().add(equipItem);
+
+
+        if (input.contains("무기")) {
+            player.getWeapons().add(invenItem);
+            equipItem = player.getWeapons().get(0);
+            player.getInventory().add(equipItem);
+            player.getWeapons().remove(equipItem);
+        } else if(input.contains("방어구")) {
+            player.getArmors().add(invenItem);
+            equipItem = player.getArmors().get(0);
+            player.getInventory().add(equipItem);
+            player.getArmors().remove(equipItem);
+        } else {
+            System.out.println("**** 무기와 방어구를 제외한 아이템은 장착할 수 없습니다 ****");
+        }
     }
 
     public void startShop(Player player) {

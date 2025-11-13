@@ -88,7 +88,7 @@ public class Player {
                 maxHp = 130;
                 maxMp = 20;
                 skill = "대가리뽀사기";
-                Item warriorWeapon = new Item("전사 기본무기", 2, ItemType.WEAPON);
+                Item warriorWeapon = new Item("전사 기본무기", 2, ItemType.WEAPON, 5);
                 weapons.add(warriorWeapon);
                 System.out.println("전사 직업 전용 무기 착용: " + warriorWeapon.getName());
                 break;
@@ -96,7 +96,7 @@ public class Player {
                 maxHp = 110;
                 maxMp = 30;
                 skill = "주몽 원샷";
-                Item archerWeapon = new Item("궁수 기본무기", 4, ItemType.WEAPON);
+                Item archerWeapon = new Item("궁수 기본무기", 4, ItemType.WEAPON, 5);
                 weapons.add(archerWeapon);
                 System.out.println("궁수 직업 전용 무기 착용: " + archerWeapon.getName());
                 break;
@@ -104,7 +104,7 @@ public class Player {
                 maxHp = 90;
                 maxMp = 50;
                 skill = "아이스 에이지";
-                Item mageWeapon = new Item("마법사 기본무기", 3, ItemType.WEAPON);
+                Item mageWeapon = new Item("마법사 기본무기", 3, ItemType.WEAPON, 5);
                 weapons.add(mageWeapon);
                 System.out.println("마법사 직업 전용 무기 착용: " + mageWeapon.getName());
                 break;
@@ -129,7 +129,7 @@ public class Player {
                 case WARRIOR:
                     this.job = Job.DRAGON_WOO;
                     this.skill = "용의 콧물";
-                    Item dragonWooWeapon = new Item("드래곤 우 히든무기", 5, ItemType.WEAPON);
+                    Item dragonWooWeapon = new Item("드래곤 우 히든무기", 5, ItemType.WEAPON, 20);
                     weapons.add(dragonWooWeapon);
                     System.out.println("히든직업 드래곤 우로 업그레이드!");
                     System.out.println("히든직업 전용 무기 착용: " + dragonWooWeapon.getName());
@@ -137,7 +137,7 @@ public class Player {
                 case ARCHER:
                     this.job = Job.CHAEU_CHOW;
                     this.skill = "그의 눈빛";
-                    Item chaeuChowWeapon = new Item("채우차우 히든무기", 7, ItemType.WEAPON);
+                    Item chaeuChowWeapon = new Item("채우차우 히든무기", 7, ItemType.WEAPON, 20);
                     weapons.add(chaeuChowWeapon);
                     System.out.println("히든직업 채우차우로 업그레이드!");
                     System.out.println("히든직업 전용 무기 착용: " + chaeuChowWeapon.getName());
@@ -145,7 +145,7 @@ public class Player {
                 case MAGE:
                     this.job = Job.LEE_SANGJUN;
                     this.skill = "배꼽 탈취";
-                    Item leeSangjunWeapon = new Item("이상준 히든무기", 6, ItemType.WEAPON);
+                    Item leeSangjunWeapon = new Item("이상준 히든무기", 6, ItemType.WEAPON, 20);
                     weapons.add(leeSangjunWeapon);
                     System.out.println("히든직업 개그맨 이상준으로 업그레이드!");
                     System.out.println("히든직업 전용 무기 착용: " + leeSangjunWeapon.getName());
