@@ -21,7 +21,7 @@ public class WeaponController {
 
     public void insertItem(Item invenItem) {
 
-        Connection con = null;
+        Connection con = getConnection();
 
         int result = 0;
 
@@ -38,7 +38,7 @@ public class WeaponController {
 
     public void deleteByName(String name) {
 
-        Connection con = null;
+        Connection con = getConnection();
 
         int result = 0;
 

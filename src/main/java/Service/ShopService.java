@@ -79,6 +79,12 @@ public class ShopService {
                     if (itemName.equals("-1")) return;
 
                     target = itemController.selectItemByName(itemName);
+
+                    if (target == null) {
+                        System.out.println("**** 잘못 입력함 ****");
+                        return;
+                    }
+
                     if (target.getCost() > money) {
                         System.out.println("**** 금액 부족 ****");
                         return;
@@ -86,7 +92,9 @@ public class ShopService {
                         System.out.println("**** 구매 완료 ****");
                         // player 디비 사용으로 변경
                         player.setCost(money -  target.getCost());
-                        player.getInventory().add(target);
+//                        player.getInventory().add(target);
+                        playerController.updatePlayer(player);
+                        inventoryController.insertItem(target);
                         itemForBuy.remove(target);
                         break;
                     }
@@ -118,7 +126,9 @@ public class ShopService {
         List<Item> playerInventoryList = inventoryController.selectAll();
         Item nowWeapon = weaponController.select("WEAPON");
         Item nowArmor = weaponController.select("ARMOR");
-
+        playerInventoryList.stream().forEach(item -> {
+            System.out.println(item.toString());
+        });
         int money = player.getCost();
         int input = -1;
         int itemInput = 0;
@@ -135,17 +145,13 @@ public class ShopService {
 
             System.out.println("현재 돈: " + money);
 
-            int count = 0;
             for (int i = 0; i < playerInventoryList.size(); i++) {
-                for (int j = 0; j < playerInventoryList.size(); j++) {
-                    System.out.println("번호: " + (count) +
+                    System.out.println(
                             " / 이름: " + playerInventoryList.get(i).getName() +
                             " / 가격: " + playerInventoryList.get(i).getCost() +
                             " / 능력치: "  + playerInventoryList.get(i).getValue()
                     );
-                    count++;
                     System.out.println("=========================");
-                }
             }
             System.out.println("번호: -1 / 판매 종료");
 

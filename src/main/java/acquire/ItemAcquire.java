@@ -1,5 +1,6 @@
 package acquire;
 
+import Controller.InventoryController;
 import Controller.ItemController;
 import Controller.PlayerController;
 import Repository.ItemRepository;
@@ -12,12 +13,14 @@ public class ItemAcquire extends Item{
 
     ItemController itemController;
     PlayerController playerController;
+    InventoryController inventoryController;
 
     public ItemAcquire(Player player,int stage){
         Item item;
         Item item2;
         this.itemController = new ItemController();
         this.playerController = new PlayerController();
+        this.inventoryController = new InventoryController();
         switch (stage){
             case 1:
                 //1단계 몬스터를 잡으면 기본방어구와 몽둥이를 준다.
@@ -25,6 +28,8 @@ public class ItemAcquire extends Item{
                 item2=itemController.selectItemByName("담백한 상의");
                 player.addItem(item);
                 player.addItem(item2);
+                inventoryController.insertItem(item);
+                inventoryController.insertItem(item2);
                 //돈도 줌
                 player.setCost(player.getCost()+200);
                 playerController.updatePlayer(player);
@@ -43,6 +48,8 @@ public class ItemAcquire extends Item{
                 item2=getRandomItem();
                 player.addItem(item);
                 player.addItem(item2);
+                inventoryController.insertItem(item);
+                inventoryController.insertItem(item2);
                 playerController.updatePlayer(player);
                 System.out.println("************************************");
                 System.out.println();
@@ -57,6 +64,8 @@ public class ItemAcquire extends Item{
                 item2=getRandomItem();
                 player.addItem(item);
                 player.addItem(item2);
+                inventoryController.insertItem(item);
+                inventoryController.insertItem(item2);
                 playerController.updatePlayer(player);
                 System.out.println("************************************");
                 System.out.println();
@@ -70,6 +79,8 @@ public class ItemAcquire extends Item{
                 item2=getRandomItem();
                 player.addItem(item);
                 player.addItem(item2);
+                inventoryController.insertItem(item);
+                inventoryController.insertItem(item2);
                 playerController.updatePlayer(player);
                 System.out.println("************************************");
                 System.out.println();
@@ -83,6 +94,8 @@ public class ItemAcquire extends Item{
                 item2=getRandomItem();
                 player.addItem(item);
                 player.addItem(item2);
+                inventoryController.insertItem(item);
+                inventoryController.insertItem(item2);
                 playerController.updatePlayer(player);
                 System.out.println("************************************");
                 System.out.println();

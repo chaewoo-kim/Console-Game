@@ -79,6 +79,7 @@ public class InventoryRepository {
         PreparedStatement pstmt = null;
         Statement stmt = null;
         ResultSet rs = null;
+        ResultSet selectRs = null;
         int result = 0;
 
         try {
@@ -86,8 +87,11 @@ public class InventoryRepository {
             String sql = prop.getProperty("insertInvenItem");
             String selectSql = prop.getProperty("selectAllInventory");
 
-            while (rs.next()) {
-                if (rs.getString("name").equals(equipItem.getName())) {
+            stmt = con.createStatement();
+            selectRs = stmt.executeQuery(selectSql);
+
+            while (selectRs.next()) {
+                if (selectRs.getString("name").equals(equipItem.getName())) {
                     System.out.println("**** 같은 물건은 가질 수 없습니다 ****");
                     return -1;
                 }

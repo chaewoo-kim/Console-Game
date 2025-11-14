@@ -68,17 +68,17 @@ public class ShopController {
 
    public void inventory(Player player, Shop shop) {
 
-       // while문 안에서 사용자에게 -1 받지 않는 이상
-       // player 객체의 inventory 전부 출력
        int input = 0;
+       List<Item> inventoryList = inventoryController.selectAll();
+
        String equipInput = "";
        while (input != -1) {
            System.out.println("**** 인벤토리 ****");
-           if (player.getInventory().isEmpty()) {
+           if (inventoryList.isEmpty()) {
                System.out.println("**** 비어있음 ****");
            } else {
-               for (int i = 0; i < player.getInventory().size(); i++) {
-                   System.out.println("**** " + player.getInventory().get(i).getName() + " / " + player.getInventory().get(i).getCost() + "원 / " + player.getInventory().get(i).getValue() + " ****");
+               for (int i = 0; i < inventoryList.size(); i++) {
+                   System.out.println("**** " + inventoryList.get(i).getName() + " / " + player.getInventory().get(i).getCost() + "원 / " + player.getInventory().get(i).getValue() + " ****");
                }
                System.out.println("**** 장비를 변경하시겠습니까? ****");
                System.out.print("Y/N: ");
@@ -104,48 +104,36 @@ public class ShopController {
        String input = null;
        Item equipItem = null;
        Item invenItem = null;
+       List<Item> inventoryList = inventoryController.selectAll();
 
        System.out.println("**** 착용 가능한 장비 ****");
-       player.getInventory().stream().forEach(item -> {
+       inventoryList.stream().forEach(item -> {
            System.out.println("**** " + item.getName() + " ****");
        });
        System.out.print("착용할 장비의 이름을 입력: ");
        input = sc.nextLine();
 
-       for (int i = 0; i < player.getInventory().size(); i++) {
-           if (player.getInventory().get(i).getName().equals(input)) {
-               invenItem = player.getInventory().get(i);
+       for (int i = 0; i < inventoryList.size(); i++) {
+           if (inventoryList.get(i).getName().equals(input)) {
+               invenItem = inventoryList.get(i);
            } else {
                System.out.println("*** 잘못된 이름입니다. 장비를 변경하지 않습니다 ****");
                return;
            }
        }
 
-       player.getInventory().remove(invenItem);
        inventoryController.deleteByName(invenItem.getName());
 
        if (input.contains("무기")) {
-//           player.getWeapons().add(invenItem);
-           weaponController.insertItem(invenItem);
-
            equipItem = weaponController.select("WEAPON");
-
-//           player.getInventory().add(equipItem);
            inventoryController.insertItem(equipItem);
-
-//           player.getWeapons().remove(equipItem);
-           weaponController.deleteByName(equipItem.getName());
+           inventoryController.deleteByName(equipItem.getName());
+           weaponController.insertItem(invenItem);
        } else if(input.contains("방어구")) {
-//           player.getArmors().add(invenItem);
-           armorController.insertItem(invenItem);
-
            equipItem = weaponController.select("ARMOR");
-
-//           player.getInventory().add(equipItem);
            inventoryController.insertItem(equipItem);
-
-//           player.getArmors().remove(equipItem);
-           armorController.deleteByName(equipItem.getName());
+           inventoryController.deleteByName(invenItem.getName());
+           armorController.insertItem(invenItem);
        } else {
            System.out.println("**** 무기와 방어구를 제외한 아이템은 장착할 수 없습니다 ****");
        }
