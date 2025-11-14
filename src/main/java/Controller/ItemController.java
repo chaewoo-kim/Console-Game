@@ -53,4 +53,19 @@ public class ItemController {
 
         close(con);
     }
+
+    public void deleteAll(String tableName) {
+
+        Connection con = getConnection();
+
+        int result = itemService.deleteAll(con);
+
+        if (result > 0) {
+            commit(con);
+        } else {
+            rollback(con);
+        }
+
+        close(con);
+    }
 }

@@ -1,5 +1,6 @@
 package game;
 
+import Controller.PlayerController;
 import View.ShopView;
 import battle.BattleSystem;
 import items.Shop;
@@ -19,16 +20,17 @@ public class GameManager {
         gameManager.startGame();
     }
 
-
     private Player player;
     private int stage;
     private Scanner scanner;
     private BattleSystem battleSystem;
     private ShopView shopView;
+    private PlayerController playerController;
 
     public GameManager() {
         scanner = new Scanner(System.in);
         stage = 1;
+        playerController = new PlayerController();
     }
 
     public void startGame() {
@@ -36,6 +38,7 @@ public class GameManager {
         System.out.print("플레이어 이름을 입력하세요: ");
         String playerName = scanner.nextLine();
         player = new Player(playerName);
+        playerController.insertPlayer(player);
         player.printStatus();
         shopView = new ShopView();
 
@@ -106,17 +109,17 @@ public class GameManager {
         scanner.nextLine();
         switch (choice) {
             case 1:
-                player.chooseJob(Job.WARRIOR);
+                player.chooseJob("WARRIOR");
                 break;
             case 2:
-                player.chooseJob(Job.ARCHER);
+                player.chooseJob("ARCHER");
                 break;
             case 3:
-                player.chooseJob(Job.MAGE);
+                player.chooseJob("MAGE");
                 break;
             default:
                 System.out.println("잘못된 선택입니다. 기본 전사로 설정합니다.");
-                player.chooseJob(Job.WARRIOR);
+                player.chooseJob("WARRIOR");
         }
     }
 

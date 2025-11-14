@@ -58,4 +58,54 @@
         SELECT MAX(id)
           FROM ITEMS
     </entry>
+
+    <entry key="deleteInventory">
+        DELETE FROM INVENTORY
+    </entry>
+
+    <entry key="insertPlayer">
+        INSERT INTO PLAYER
+        (
+          name
+        , level
+        , hp
+        , maxHp
+        , mp
+        , maxMp
+        , job
+        , skill
+        , cost
+        )
+        VALUES
+        (
+          ?
+        , ?
+        , ?
+        , ?
+        , ?
+        , ?
+        , ?
+        , ?
+        , ?
+        )
+    </entry>
+
+    <entry key="updatePlayer">
+        UPDATE PLAYER
+           SET
+          name = ?
+        , level = ?
+        , hp = ?
+        , maxHp = ?
+        , mp = ?
+        , maxMp = ?
+        , job = ?
+        , skill = ?
+        , cost = ?
+        VALUES = ?
+    </entry>
+
+    <entry key="deletePlayer">
+        DELETE FROM PLAYER
+    </entry>
 </properties>

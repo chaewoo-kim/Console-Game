@@ -1,6 +1,7 @@
 package user;
 
 import Controller.ItemController;
+import Controller.PlayerController;
 import items.Item;
 import items.ItemType;
 import items.Items;
@@ -15,7 +16,7 @@ public class Player {
     private int level;
     private int hp;
     private int maxHp;
-    private Job job;
+    private String job;
     private String skill;
     private int mp;
     private int maxMp;
@@ -26,6 +27,8 @@ public class Player {
     private List<Item> supplies;        // -> 소모품
     private List<Item> inventory; // -> 인벤토리
     private ItemController itemController;
+    private PlayerController playerController;
+    private int result;
 
     Items items = new  Items();
 
@@ -38,7 +41,7 @@ public class Player {
         this.maxHp = 100;
         this.mp = 10;
         this.maxMp = 50;
-        this.job = Job.ADVENTURER;
+        this.job = "ADVENTURER";
         this.skill = null;
         this.cost = 0;
         this.itemList = new ArrayList<>();
@@ -49,6 +52,9 @@ public class Player {
         this.supplies = new ArrayList<>();
         this.inventory = new ArrayList<>();
         this.itemController = new ItemController();
+        this.playerController = new PlayerController();
+        itemController.deleteAll("INVENTORY");
+        playerController.deleteAll("PLAYER");
     }
 
 
@@ -98,11 +104,11 @@ public class Player {
         }
     }
 
-    public void chooseJob(Job newJob) {     // -> 2층에서 직업정하기.
+    public void chooseJob(String newJob) {     // -> 2층에서 직업정하기.
         this.job = newJob;
 
         switch (newJob) {
-            case WARRIOR:
+            case "WARRIOR":
                 maxHp = 130;
                 maxMp = 20;
                 skill = "대가리뽀사기";
@@ -110,7 +116,7 @@ public class Player {
                 weapons.add(warriorWeapon);
                 System.out.println("전사 직업 전용 무기 착용: " + warriorWeapon.getName());
                 break;
-            case ARCHER:
+            case "ARCHER":
                 maxHp = 110;
                 maxMp = 30;
                 skill = "주몽 원샷";
@@ -118,7 +124,7 @@ public class Player {
                 weapons.add(archerWeapon);
                 System.out.println("궁수 직업 전용 무기 착용: " + archerWeapon.getName());
                 break;
-            case MAGE:
+            case "MAGE":
                 maxHp = 90;
                 maxMp = 50;
                 skill = "아이스 에이지";
@@ -144,24 +150,24 @@ public class Player {
             }
 
             switch (this.job) {
-                case WARRIOR:
-                    this.job = Job.DRAGON_WOO;
+                case "WARRIOR":
+                    this.job = "DRAGON_WOO";
                     this.skill = "용의 콧물";
                     Item dragonWooWeapon = itemController.selectItemByName("드래곤 우 히든무기");
                     weapons.add(dragonWooWeapon);
                     System.out.println("히든직업 드래곤 우로 업그레이드!");
                     System.out.println("히든직업 전용 무기 착용: " + dragonWooWeapon.getName());
                     break;
-                case ARCHER:
-                    this.job = Job.CHAEU_CHOW;
+                case "ARCHER":
+                    this.job = "CHAEU_CHOW";
                     this.skill = "그의 눈빛";
                     Item chaeuChowWeapon = itemController.selectItemByName("채우차우 히든무기");
                     weapons.add(chaeuChowWeapon);
                     System.out.println("히든직업 채우차우로 업그레이드!");
                     System.out.println("히든직업 전용 무기 착용: " + chaeuChowWeapon.getName());
                     break;
-                case MAGE:
-                    this.job = Job.LEE_SANGJUN;
+                case "MAGE":
+                    this.job = "LEE_SANGJUN";
                     this.skill = "배꼽 탈취";
                     Item leeSangjunWeapon = itemController.selectItemByName("이상준 히든무기");
                     weapons.add(leeSangjunWeapon);
@@ -266,11 +272,11 @@ public class Player {
         this.maxHp = maxHp;
     }
 
-    public Job getJob() {
+    public String getJob() {
         return job;
     }
 
-    public void setJob(Job job) {
+    public void setJob(String job) {
         this.job = job;
     }
 
@@ -349,7 +355,7 @@ public class Player {
 
 
     public void takeDamage(Monster monster, Player player) {
-        if (player.getJob() == Job.ADVENTURER) {
+        if (player.getJob().equals("ADVENTURER")) {
             return;
         }
 

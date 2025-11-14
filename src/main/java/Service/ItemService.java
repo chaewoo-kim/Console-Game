@@ -55,4 +55,9 @@ public class ItemService {
 
         return itemRepository.insertItem(con, item);
     }
+
+    public int deleteAll(Connection con) {
+
+        return itemRepository.deleteAll(con);
+    }
 }
