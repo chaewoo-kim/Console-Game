@@ -102,10 +102,26 @@
         , job = ?
         , skill = ?
         , cost = ?
-        VALUES = ?
     </entry>
 
     <entry key="deletePlayer">
         DELETE FROM PLAYER
+    </entry>
+
+    <entry key="selectAllInventory">
+        SELECT * FROM INVENTORY
+    </entry>
+
+    <entry key="selectWeapon">
+        SELECT * FROM WEAPON
+    </entry>
+
+    <entry key="selectArmor">
+        SELECT * FROM Armor
+    </entry>
+
+    <entry key="deleteByName">
+        DELETE FROM INVENTORY
+         WHERE name = ?
     </entry>
 </properties>

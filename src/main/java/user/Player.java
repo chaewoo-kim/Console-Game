@@ -215,7 +215,7 @@ public class Player {
 
 
 
-    public void useSkill() {        //      -> 스킬을 콘솔에 출력(콘솔효과 정할 수 있음).
+    public void useSkill(Player player) {        //      -> 스킬을 콘솔에 출력(콘솔효과 정할 수 있음).
         if (skill != null) {
             if (mp >= cost) { // -> MP가 충분할 때만 스킬 사용 가능
                 mp -= cost;   // -> MP 소모
@@ -226,6 +226,7 @@ public class Player {
         } else {
             System.out.println("스킬 없음");
         }
+        playerController.updatePlayer(player);
     }
 
     public void printStatus() {     // -> 플레이어의 현재 상태(닉네임, 레벨, hp, mp, 직업, 스킬)를 알 수 있음.

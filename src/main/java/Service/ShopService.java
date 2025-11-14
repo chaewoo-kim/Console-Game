@@ -1,6 +1,7 @@
 package Service;
 
-import Controller.ItemController;
+import Controller.*;
+import Repository.InventoryRepository;
 import Repository.ItemRepository;
 import Repository.ShopRepository;
 import items.Item;
@@ -18,8 +19,11 @@ import static common.JDBCTemplate.getConnection;
 
 public class ShopService {
 
-    ShopRepository  shopRepository = new ShopRepository();
     ItemController  itemController = new ItemController();
+    PlayerController playerController = new PlayerController();
+    InventoryController inventoryController = new InventoryController();
+    ArmorController armorController = new ArmorController();
+    WeaponController weaponController = new WeaponController();
     Scanner sc = new Scanner(System.in);
 
     public void buy(Player player, Shop shop) {
@@ -106,15 +110,17 @@ public class ShopService {
 
     public void sell(Player player, Shop shop) {
 
-        List<List<Item>> playItemList = new ArrayList<>();  // player 디비 사용으로 변경
-        playItemList.add(player.getItemList());
-        playItemList.add(player.getWeapons());
-        playItemList.add(player.getArmors());
-        playItemList.add(player.getInventory());
+//        List<List<Item>> playItemList = new ArrayList<>();  // player 디비 사용으로 변경
+//        playItemList.add(player.getItemList());
+//        playItemList.add(player.getWeapons());
+//        playItemList.add(player.getArmors());
+//        playItemList.add(player.getInventory());
+        List<Item> playerInventoryList = inventoryController.selectAll();
+        Item nowWeapon = weaponController.select("WEAPON");
+        Item nowArmor = weaponController.select("ARMOR");
 
-        int money = player.getCost(); // player 디비 사용으로 변경
+        int money = player.getCost();
         int input = -1;
-        String itemName = "";
         int itemInput = 0;
         int categoryNum = 0;
         int itemNum = 0;
@@ -122,21 +128,20 @@ public class ShopService {
 
         while (input != 0) {
 
-            if (playItemList.isEmpty()) {
-                System.out.println("판매할 물건 없음");
+            if (playerInventoryList.isEmpty()) {
+                System.out.println("**** 판매할 물건 없음 ****");
                 break;
             }
 
             System.out.println("현재 돈: " + money);
 
             int count = 0;
-            for (int i = 0; i < playItemList.size(); i++) {
-                if (playItemList.get(i).isEmpty()) continue;
-                for (int j = 0; j < playItemList.get(i).size(); j++) {
+            for (int i = 0; i < playerInventoryList.size(); i++) {
+                for (int j = 0; j < playerInventoryList.size(); j++) {
                     System.out.println("번호: " + (count) +
-                            " / 이름: " + playItemList.get(i).get(j).getName() +
-                            " / 가격: " + playItemList.get(i).get(j).getCost() +
-                            " / 능력치: "  + playItemList.get(i).get(j).getValue()
+                            " / 이름: " + playerInventoryList.get(i).getName() +
+                            " / 가격: " + playerInventoryList.get(i).getCost() +
+                            " / 능력치: "  + playerInventoryList.get(i).getValue()
                     );
                     count++;
                     System.out.println("=========================");
@@ -145,56 +150,75 @@ public class ShopService {
             System.out.println("번호: -1 / 판매 종료");
 
             System.out.print("판매할 아이템의 이름: ");
-            itemName = sc.nextLine();
+            final String itemName = sc.nextLine();
 
             if (itemName.equals("-1")) break;
 
-            OUTER_LOOP:
-            for (int i = 0; i < playItemList.size(); i++) {
-                if (playItemList.get(i).isEmpty()) continue;
-                for (int j = 0; j < playItemList.get(i).size(); j++) {
-                    if (playItemList.get(i).get(j).getName().equals(itemName)) {
-                        if (playItemList.get(i).get(j).getName().contains("무기")) {
-                            for (int k = 0; k < player.getInventory().size(); k++) {
-                                if (player.getInventory().get(k).getName().contains("무기")) {
-                                    isNoWeapon = false;
-                                } else {
-                                    isNoWeapon = true;
-                                }
-                            }
-                        }
-
-                        if (isNoWeapon) {
-                            System.out.println("**** 판매 후 교체할 무기가 없습니다 ****");
-                            break OUTER_LOOP;
-                        }
-
-                        switch (i) {
-                            case 0:
-                                player.setCost(player.getCost() + playItemList.get(i).get(j).getCost());
-                                player.getItemList().remove(playItemList.get(i).get(j));
-                                break;
-                            case 1:
-                                player.setCost(player.getCost() + playItemList.get(i).get(j).getCost());
-                                player.getWeapons().remove(playItemList.get(i).get(j));
-                                break;
-                            case 2:
-                                player.setCost(player.getCost() + playItemList.get(i).get(j).getCost());
-                                player.getArmors().remove(playItemList.get(i).get(j));
-                                break;
-                            case 3:
-                                player.setCost(player.getCost() + playItemList.get(i).get(j).getCost());
-                                player.getSupplies().remove(playItemList.get(i).get(j));
-                                break;
-                            default:
-                                break;
-                        }
-                        System.out.println("판매 완료");
-                        System.out.println("현재 보유 금액: " + player.getCost());
-                        break;
-                    }
-                }
+            if (nowWeapon == null) {
+                System.out.println("**** 판매 후 교체할 무기가 없습니다 ****");
+            } else if (nowArmor == null) {
+                System.out.println("**** 판매 후 교체할 방어구가 없습니다 ****");
             }
+
+            // 사용자 돈 감소
+            playerInventoryList.stream().forEach(item -> {
+                if (item.getName().equals(itemName)) {
+                    player.setCost(money - item.getCost());
+                }
+            });
+            // 인벤토리에서 삭제
+            inventoryController.deleteByName(itemName);
+            // 사용자 상태 업데이트
+            playerController.updatePlayer(player);
+
+            System.out.println("**** 판매 완료 ****");
+            System.out.println("**** 현재 보유 금액: " + player.getCost() + " ****");
+
+//            OUTER_LOOP:
+//            for (int i = 0; i < playerInventoryList.size(); i++) {
+//                for (int j = 0; j < playerInventoryList.get(i).size(); j++) {
+//                    if (playerInventoryList.get(i).get(j).getName().equals(itemName)) {
+//                        if (playerInventoryList.get(i).get(j).getName().contains("무기")) {
+//                            for (int k = 0; k < player.getInventory().size(); k++) {
+//                                if (player.getInventory().get(k).getName().contains("무기")) {
+//                                    isNoWeapon = false;
+//                                } else {
+//                                    isNoWeapon = true;
+//                                }
+//                            }
+//                        }
+//
+//                        if (isNoWeapon) {
+//                            System.out.println("**** 판매 후 교체할 무기가 없습니다 ****");
+//                            break OUTER_LOOP;
+//                        }
+//
+//                        switch (i) {
+//                            case 0:
+//                                player.setCost(player.getCost() + playItemList.get(i).get(j).getCost());
+//                                player.getItemList().remove(playItemList.get(i).get(j));
+//                                break;
+//                            case 1:
+//                                player.setCost(player.getCost() + playItemList.get(i).get(j).getCost());
+//                                player.getWeapons().remove(playItemList.get(i).get(j));
+//                                break;
+//                            case 2:
+//                                player.setCost(player.getCost() + playItemList.get(i).get(j).getCost());
+//                                player.getArmors().remove(playItemList.get(i).get(j));
+//                                break;
+//                            case 3:
+//                                player.setCost(player.getCost() + playItemList.get(i).get(j).getCost());
+//                                player.getSupplies().remove(playItemList.get(i).get(j));
+//                                break;
+//                            default:
+//                                break;
+//                        }
+//                        System.out.println("판매 완료");
+//                        System.out.println("현재 보유 금액: " + player.getCost());
+//                        break;
+//                    }
+//                }
+//            }
 
             System.out.println("추가 판매: 1, 판매 종료: 0");
             System.out.print("입력: ");
