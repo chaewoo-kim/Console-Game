@@ -6,8 +6,7 @@ import items.Item;
 import java.sql.Connection;
 import java.util.List;
 
-import static common.JDBCTemplate.commit;
-import static common.JDBCTemplate.rollback;
+import static common.JDBCTemplate.*;
 
 public class InventoryController {
 
@@ -22,7 +21,7 @@ public class InventoryController {
 
     public void deleteByName(String itemName) {
 
-        Connection con = null;
+        Connection con = getConnection();
         int result = 0;
 
         result = inventoryService.deleteByName(con, itemName);
@@ -32,5 +31,23 @@ public class InventoryController {
         } else {
             rollback(con);
         }
+
+        close(con);
+    }
+
+    public void insertItem(Item equipItem) {
+
+        Connection con = getConnection();
+        int result = 0;
+
+        result = inventoryService.insertItem(con, equipItem);
+
+        if (result > 0) {
+            commit(con);
+        } else {
+            rollback(con);
+        }
+
+        close(con);
     }
 }

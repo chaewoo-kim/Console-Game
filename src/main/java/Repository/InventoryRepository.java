@@ -73,4 +73,43 @@ public class InventoryRepository {
 
         return result;
     }
+
+    public int insertItem(Connection con, Item equipItem) {
+
+        PreparedStatement pstmt = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+        int result = 0;
+
+        try {
+            prop.loadFromXML(new FileInputStream("src/main/java/mapper/ConsoleGameMapper.xml"));
+            String sql = prop.getProperty("insertInvenItem");
+            String selectSql = prop.getProperty("selectAllInventory");
+
+            while (rs.next()) {
+                if (rs.getString("name").equals(equipItem.getName())) {
+                    System.out.println("**** 같은 물건은 가질 수 없습니다 ****");
+                    return -1;
+                }
+            }
+
+            pstmt = con.prepareStatement(sql);
+
+            pstmt.setString(1, equipItem.getName());
+            pstmt.setInt(2, equipItem.getCost());
+            pstmt.setString(3, equipItem.getType());
+            pstmt.setInt(4, equipItem.getValue());
+
+            result = pstmt.executeUpdate();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            close(pstmt);
+        }
+
+        return result;
+    }
 }

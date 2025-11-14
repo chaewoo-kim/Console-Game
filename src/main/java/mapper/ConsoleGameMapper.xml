@@ -124,4 +124,65 @@
         DELETE FROM INVENTORY
          WHERE name = ?
     </entry>
+
+    <entry key="insertWeaponItem">
+        INSERT INTO WEAPON
+        (
+          name
+        , cost
+        , category
+        , value
+        )
+        VALUES
+        (
+          ?
+        , ?
+        , ?
+        , ?
+        )
+    </entry>
+
+    <entry key="insertInvenItem">
+        INSERT INTO INVENTORY
+        (
+        name
+        , cost
+        , category
+        , value
+        )
+        VALUES
+        (
+        ?
+        , ?
+        , ?
+        , ?
+        )
+    </entry>
+
+    <entry key="deleteByNameWeapon">
+        DELETE FROM WEAPON
+         WHERE name = ?
+    </entry>
+
+    <entry key="insertArmor">
+        INSERT INTO ARMOR
+        (
+          name
+        , cost
+        , category
+        , value
+        )
+        VALUES
+        (
+          ?
+        , ?
+        , ?
+        , ?
+        )
+    </entry>
+
+    <entry key="deleteByNameArmor">
+        DELETE FROM ARMOR
+         WHERE name = ?
+    </entry>
 </properties>

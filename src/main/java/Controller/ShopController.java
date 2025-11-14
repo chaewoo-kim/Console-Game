@@ -5,17 +5,22 @@ import items.Item;
 import items.Shop;
 import user.Player;
 
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class ShopController {
 
     ShopService shopService;
+    Scanner sc = new Scanner(System.in);
+    InventoryController inventoryController;
+    WeaponController weaponController;
+    ArmorController armorController;
 
     public ShopController() {
+
         this.shopService = new ShopService();
+        this.inventoryController = new InventoryController();
+        this.weaponController = new WeaponController();
+        this.armorController = new ArmorController();
     }
 
     public void buy(Player player, Shop shop) {
@@ -42,7 +47,7 @@ public class ShopController {
         shopService.sell(player, shop);
     }
 
-   /*public void equipment(Player player) {
+   public void equipment(Player player, Shop shop) {
 
        int input = 0;
 
@@ -59,10 +64,9 @@ public class ShopController {
            input = sc.nextInt();
            sc.nextLine();
        }
+   }
 
-   }*/
-
-   /*public void inventory(Player player) {
+   public void inventory(Player player, Shop shop) {
 
        // while문 안에서 사용자에게 -1 받지 않는 이상
        // player 객체의 inventory 전부 출력
@@ -93,11 +97,11 @@ public class ShopController {
            sc.nextLine();
        }
 
-   }*/
+   }
 
-   /*private void changeEquipment(Player player) {
+   private void changeEquipment(Player player) {
 
-       String input = "";
+       String input = null;
        Item equipItem = null;
        Item invenItem = null;
 
@@ -111,24 +115,39 @@ public class ShopController {
        for (int i = 0; i < player.getInventory().size(); i++) {
            if (player.getInventory().get(i).getName().equals(input)) {
                invenItem = player.getInventory().get(i);
+           } else {
+               System.out.println("*** 잘못된 이름입니다. 장비를 변경하지 않습니다 ****");
+               return;
            }
        }
 
        player.getInventory().remove(invenItem);
-
+       inventoryController.deleteByName(invenItem.getName());
 
        if (input.contains("무기")) {
-           player.getWeapons().add(invenItem);
-           equipItem = player.getWeapons().get(0);
-           player.getInventory().add(equipItem);
-           player.getWeapons().remove(equipItem);
+//           player.getWeapons().add(invenItem);
+           weaponController.insertItem(invenItem);
+
+           equipItem = weaponController.select("WEAPON");
+
+//           player.getInventory().add(equipItem);
+           inventoryController.insertItem(equipItem);
+
+//           player.getWeapons().remove(equipItem);
+           weaponController.deleteByName(equipItem.getName());
        } else if(input.contains("방어구")) {
-           player.getArmors().add(invenItem);
-           equipItem = player.getArmors().get(0);
-           player.getInventory().add(equipItem);
-           player.getArmors().remove(equipItem);
+//           player.getArmors().add(invenItem);
+           armorController.insertItem(invenItem);
+
+           equipItem = weaponController.select("ARMOR");
+
+//           player.getInventory().add(equipItem);
+           inventoryController.insertItem(equipItem);
+
+//           player.getArmors().remove(equipItem);
+           armorController.deleteByName(equipItem.getName());
        } else {
            System.out.println("**** 무기와 방어구를 제외한 아이템은 장착할 수 없습니다 ****");
        }
-   }*/
+   }
 }

@@ -79,7 +79,7 @@ public class ShopService {
                     if (itemName.equals("-1")) return;
 
                     target = itemController.selectItemByName(itemName);
-                    if (target.getCost() < money) {
+                    if (target.getCost() > money) {
                         System.out.println("**** 금액 부족 ****");
                         return;
                     } else {

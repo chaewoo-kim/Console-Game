@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import static common.JDBCTemplate.close;
 import static common.JDBCTemplate.getConnection;
 
 public class ItemService {
@@ -17,36 +18,36 @@ public class ItemService {
 
     public Item selectItemByName(String name) {
 
-        Connection con = null;
+        Connection con = getConnection();
         Item item = null;
 
-        con = getConnection();
-
         item = itemRepository.selectItemByName(con, name);
+
+        close(con);
 
         return item;
     }
 
     public Item selectItemByIndex(int index) {
 
-        Connection con = null;
+        Connection con = getConnection();
         Item item = null;
 
-        con = getConnection();
-
         item = itemRepository.selectItemByIndex(con, index);
+
+        close(con);
 
         return item;
     }
 
     public List<Item> selectAllItems() {
 
-        Connection con = null;
+        Connection con = getConnection();
         List<Item> itemList = null;
 
-        con = getConnection();
-
         itemList = itemRepository.selectAllItems(con);
+
+        close(con);
 
         return itemList;
     }

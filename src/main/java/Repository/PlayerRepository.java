@@ -48,6 +48,8 @@ public class PlayerRepository {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } finally {
+            close(pstmt);
         }
 
         return result;
@@ -83,6 +85,8 @@ public class PlayerRepository {
             throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }  finally {
+            close(pstmt);
         }
 
         return result;

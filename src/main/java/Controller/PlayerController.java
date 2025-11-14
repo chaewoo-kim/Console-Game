@@ -22,6 +22,8 @@ public class PlayerController {
         } else {
             rollback(con);
         }
+
+        close(con);
     }
 
     public void updatePlayer(Player player) {
@@ -35,6 +37,8 @@ public class PlayerController {
         } else {
             rollback(con);
         }
+
+        close(con);
     }
 
 
@@ -49,5 +53,7 @@ public class PlayerController {
         } else {
             rollback(con);
         }
+
+        close(con);
     }
 }

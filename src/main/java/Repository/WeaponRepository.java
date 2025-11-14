@@ -57,4 +57,61 @@ public class WeaponRepository {
 
         return weaponOrArmor;
     }
+
+    public int insertItem(Connection con, Item invenItem) {
+
+        PreparedStatement pstmt = null;
+        int result = 0;
+        String sql = null;
+
+        try {
+            prop.loadFromXML(new FileInputStream("src/main/java/mapper/ConsoleGameMapper.xml"));
+            sql = sql = prop.getProperty("insertWeaponItem");
+
+            pstmt = con.prepareStatement(sql);
+
+            pstmt.setString(1, invenItem.getName());
+            pstmt.setInt(2, invenItem.getCost());
+            pstmt.setString(3, invenItem.getType());
+            pstmt.setInt(4, invenItem.getValue());
+
+            result = pstmt.executeUpdate();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            close(pstmt);
+        }
+
+        return result;
+    }
+
+    public int deleteByName(Connection con, String name) {
+
+        PreparedStatement pstmt = null;
+        int result = 0;
+        String sql = null;
+
+        try {
+            prop.loadFromXML(new FileInputStream("src/main/java/mapper/ConsoleGameMapper.xml"));
+            sql = sql = prop.getProperty("deleteByNameWeapon");
+
+            pstmt = con.prepareStatement(sql);
+
+            pstmt.setString(1, name);
+
+            result = pstmt.executeUpdate();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            close(pstmt);
+        }
+
+        return result;
+    }
 }

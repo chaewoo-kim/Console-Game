@@ -6,6 +6,7 @@ import items.Item;
 import java.sql.Connection;
 import java.util.List;
 
+import static common.JDBCTemplate.close;
 import static common.JDBCTemplate.getConnection;
 
 public class InventoryService {
@@ -18,6 +19,8 @@ public class InventoryService {
 
         List<Item> inventoryList = inventoryRepository.selectAll(con);
 
+        close(con);
+
         return inventoryList;
     }
 
@@ -26,6 +29,15 @@ public class InventoryService {
         int result = 0;
 
         result = inventoryRepository.deleteByName(con, itemName);
+
+        return result;
+    }
+
+    public int insertItem(Connection con, Item equipItem) {
+
+        int result = 0;
+
+        result = inventoryRepository.insertItem(con, equipItem);
 
         return result;
     }

@@ -6,6 +6,7 @@ import items.Item;
 import java.sql.Connection;
 import java.util.List;
 
+import static common.JDBCTemplate.close;
 import static common.JDBCTemplate.getConnection;
 
 public class WeaponService {
@@ -18,6 +19,26 @@ public class WeaponService {
 
         Item weapon = weaponRepository.select(con, tableName);
 
+        close(con);
+
         return weapon;
+    }
+
+    public int insertItem(Connection con, Item invenItem) {
+
+        int result = 0;
+
+        result = weaponRepository.insertItem(con, invenItem);
+
+        return result;
+    }
+
+    public int deleteByName(Connection con, String name) {
+
+        int result = 0;
+
+        result = weaponRepository.deleteByName(con, name);
+
+        return result;
     }
 }
