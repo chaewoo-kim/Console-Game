@@ -1,28 +1,42 @@
 package items;
 
+import Controller.ItemController;
+
 public class Item {
+    int id;
     String name;
     int cost;
     int value;
-    ItemType itemType;
+    String itemType;
+    ItemController itemController;
 
     public Item() {
     }
 
-    public Item(String name, int cost, ItemType itemType, int value) {
+    public Item(String name, int cost, String itemType, int value) {
+        this.name = name;
+        this.cost = cost;
+        this.value = value;
+        this.itemType = itemType;
+    }
+
+    public Item(int id, String name, int cost, String itemType, int value) {
+        this.id = id;
         this.name = name;
         this.cost = cost;
         this.itemType = itemType;
         this.value = value;
+        this.itemController = new ItemController();
     }
 
     @Override
     public String toString() {
         return "Item{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", cost=" + cost +
                 ", value=" + value +
-                ", itemType=" + itemType +
+                ", itemType='" + itemType + '\'' +
                 '}';
     }
 
@@ -31,7 +45,7 @@ public class Item {
         int l=items.allItems.size();//3
         int r=(int)(Math.random()*l)+1;
         if (items.allItems.get(r) == null || items.allItems.get(r).isEmpty()) {
-            return new Item("기본 아이템", 10, ItemType.WEAPON, 5);
+            return itemController.selectItemByName("매콤한 주먹");
         }
         
         int rr=1+(int)(Math.random()*(items.allItems.get(r).size()));
@@ -54,11 +68,11 @@ public class Item {
         this.cost = cost;
     }
 
-    public ItemType getType() {
+    public String getType() {
         return itemType;
     }
 
-    public void setType(ItemType itemType) {
+    public void setType(String itemType) {
         this.itemType = itemType;
     }
 

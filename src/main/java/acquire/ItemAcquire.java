@@ -1,5 +1,7 @@
 package acquire;
 
+import Controller.ItemController;
+import Repository.ItemRepository;
 import items.Item;
 import items.ItemType;
 import items.Items;
@@ -7,14 +9,17 @@ import user.Player;
 
 public class ItemAcquire extends Item{
 
+    ItemController itemController;
+
     public ItemAcquire(Player player,int stage){
         Item item;
         Item item2;
+        this.itemController = new ItemController();
         switch (stage){
             case 1:
                 //1단계 몬스터를 잡으면 기본방어구와 몽둥이를 준다.
-                item=new Item("시작무기", 3, ItemType.WEAPON, 5);
-                item2=new Item("시작방어구",3,ItemType.ARMOR, 5);
+                item=itemController.selectItemByName("매콤한 주먹");
+                item2=itemController.selectItemByName("담백한 상의");
                 player.addItem(item);
                 player.addItem(item2);
                 //돈도 줌
@@ -27,7 +32,7 @@ public class ItemAcquire extends Item{
                 break;
             case 2:
                 //2단계 카드키를 줌
-                player.addItem(new Item("카드키",0,ItemType.UNIQUE, 0));
+                player.addItem(itemController.selectItemByName("카드키"));
                 player.setCost(player.getCost()+200);
                 //랜덤 아이템 2개
                 item=getRandomItem();
