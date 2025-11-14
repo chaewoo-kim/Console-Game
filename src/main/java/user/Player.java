@@ -362,7 +362,7 @@ public class Player {
     public boolean isHavePotion(Player player){
         List<Item> litem=player.getInventory();
         for(Item item:litem){
-            if(item.getType()==ItemType.SUPPLY){
+            if(item.getType().equals("SUPPLY")){
                 litem.remove(item);
                 return true;
             }

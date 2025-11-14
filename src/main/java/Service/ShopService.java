@@ -74,24 +74,6 @@ public class ShopService {
 
                     if (itemName.equals("-1")) return;
 
-    //                for (int i = 1; i <= allItemList.size(); i++) {
-    //                    if (allItemList.get(i) == null) continue;
-    //                    for (int j = 1; j <= allItemList.get(i).size(); j++) {
-    //                        if (items.allItems.get(i).get(j).getName().equals(itemName)) {
-    //                            if (items.allItems.get(i).get(j).getCost() > money) {
-    //                                System.out.println("**** 금액 부족 ****");
-    //                                return;
-    //                            } else {
-    //                                System.out.println("**** 구매 완료 ****");
-    //                                player.setCost(money -  items.allItems.get(i).get(j).getCost());
-    //                                player.getInventory().add(items.allItems.get(i).get(j));
-    //                                itemForBuy.remove(items.allItems.get(i).get(j));
-    //                                break;
-    //                            }
-    //                        }
-    //                    }
-    //                }
-
                     target = itemController.selectItemByName(itemName);
                     if (target.getCost() < money) {
                         System.out.println("**** 금액 부족 ****");
@@ -122,7 +104,7 @@ public class ShopService {
         }
     }
 
-    /*public void sell(Player player, Shop shop) {
+    public void sell(Player player, Shop shop) {
 
         List<List<Item>> playItemList = new ArrayList<>();  // player 디비 사용으로 변경
         playItemList.add(player.getItemList());
@@ -226,5 +208,5 @@ public class ShopService {
             }
 
         }
-    }*/
+    }
 }
