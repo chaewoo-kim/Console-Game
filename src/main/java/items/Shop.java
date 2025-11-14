@@ -347,4 +347,61 @@ public class Shop {
     public void startShop(Player player) {
         mainStream(player);
     }
+
+    public Items getItems() {
+        return items;
+    }
+
+    public void setItems(Items items) {
+        this.items = items;
+    }
+
+    public Scanner getSc() {
+        return sc;
+    }
+
+    public void setSc(Scanner sc) {
+        this.sc = sc;
+    }
+
+    public String getMainOutput() {
+        return mainOutput;
+    }
+
+    public void setMainOutput(String mainOutput) {
+        this.mainOutput = mainOutput;
+    }
+
+    public String getBuyOutput() {
+        return buyOutput;
+    }
+
+    public void setBuyOutput(String buyOutput) {
+        this.buyOutput = buyOutput;
+    }
+
+    public String getSellOutput() {
+        return sellOutput;
+    }
+
+    public void setSellOutput(String sellOutput) {
+        this.sellOutput = sellOutput;
+    }
+
+    public boolean isBuy() {
+        return isBuy;
+    }
+
+    public void setBuy(boolean buy) {
+        isBuy = buy;
+    }
+
+    public boolean isSell() {
+        return isSell;
+    }
+
+    public void setSell(boolean sell) {
+        isSell = sell;
+    }
+
 }

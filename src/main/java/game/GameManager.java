@@ -1,5 +1,6 @@
 package game;
 
+import View.ShopView;
 import battle.BattleSystem;
 import items.Shop;
 import monster.*;
@@ -23,7 +24,7 @@ public class GameManager {
     private int stage;
     private Scanner scanner;
     private BattleSystem battleSystem;
-    private Shop shop;
+    private ShopView shopView;
 
     public GameManager() {
         scanner = new Scanner(System.in);
@@ -36,7 +37,7 @@ public class GameManager {
         String playerName = scanner.nextLine();
         player = new Player(playerName);
         player.printStatus();
-        shop = new Shop();
+        shopView = new ShopView();
 
         while(stage <= 5) {
             System.out.println("\n현재 스테이지: " + stage);
@@ -59,33 +60,33 @@ public class GameManager {
                 System.out.println("1층: 모험가로 시작합니다.");
                 battleSystem = new BattleSystem(player, new Floor1Boss(), stage);
                 battleSystem.startBattle();
-                shop.startShop(player);
+                shopView.startShop(player);
                 break;
             case 2:
                 battleSystem = new BattleSystem(player, new Floor2Boss(), stage);
                 battleSystem.startBattle();
                 if (player.getHp() <= 0) break;
                 handleJobSelection();
-                shop.startShop(player);
+                shopView.startShop(player);
                 break;
             case 3:
                 battleSystem = new BattleSystem(player, new Floor3Boss(), stage);
                 battleSystem.startBattle();
                 if (player.getHp() <= 0) break;
                 handleHiddenUpgrade();
-                shop.startShop(player);
+                shopView.startShop(player);
                 break;
             case 4:
                 battleSystem = new BattleSystem(player, new Floor4Boss(), stage);
                 battleSystem.startBattle();
                 if  (player.getHp() <= 0) break;
-                shop.startShop(player);
+                shopView.startShop(player);
                 break;
             default:
                 battleSystem = new BattleSystem(player, new Floor5Boss(), stage);
                 battleSystem.startBattle();
                 if  (player.getHp() <= 0) break;
-                shop.startShop(player);
+                shopView.startShop(player);
                 System.out.println(stage + "층: 스테이지 진행 중...");
                 break;
         }
