@@ -74,7 +74,7 @@ public class ShopController {
 
        String equipInput = "";
        while (input != -1) {
-           System.out.println("******** 인벤토리 ********");
+           System.out.println("************ 인벤토리 ************");
            if (inventoryList.isEmpty()) {
                System.out.println("******** 비어있음 ********");
            } else {
@@ -82,9 +82,9 @@ public class ShopController {
 //                   if (inventoryList.get(i).getName().equals(player.getWeapons().get(0).getName()) || inventoryList.get(i).getName().equals(player.getArmors().get(0).getName())) {
 //                       continue;
 //                   }
-                   System.out.println("******** " + inventoryList.get(i).getName() + " / " + inventoryList.get(i).getCost() + "원 / " + inventoryList.get(i).getValue() + " ********");
+                   System.out.println("****** " + inventoryList.get(i).getName() + " / " + inventoryList.get(i).getCost() + "원 / " + inventoryList.get(i).getValue() + " ******");
                }
-               System.out.println("******** 장비를 변경하시겠습니까? ********");
+               System.out.println("********* 장비를 변경하시겠습니까? *********");
                System.out.print("Y/N: ");
                equipInput = sc.nextLine();
                if (equipInput.equals("Y")) {
@@ -95,7 +95,7 @@ public class ShopController {
                    break;
                }
            }
-           System.out.println("******** 나가기: -1 ********");
+           System.out.println("********** 나가기: -1 **********");
            input = sc.nextInt();
            sc.nextLine();
        }
@@ -109,7 +109,7 @@ public class ShopController {
        Item invenItem = null;
        List<Item> inventoryList = inventoryController.selectAll();
 
-       System.out.println("******** 착용 가능한 장비 ********");
+       System.out.println("********* 착용 가능한 장비 *********");
        inventoryList.stream().forEach(item -> {
            System.out.println("********** " + item.getName() + " **********");
        });

@@ -87,15 +87,15 @@ public class ShopService {
                     }
 
                     if (target == null) {
-                        System.out.println("**** 잘못 입력함 ****");
+                        System.out.println("********** 잘못 입력함 **********");
                         return;
                     }
 
                     if (target.getCost() > money) {
-                        System.out.println("**** 금액 부족 ****");
+                        System.out.println("********** 금액 부족 **********");
                         return;
                     } else {
-                        System.out.println("**** 구매 완료 ****");
+                        System.out.println("********** 구매 완료 **********");
                         player.setCost(player.getCost() -  target.getCost());
                         playerController.updatePlayer(player);
                         inventoryController.insertItem(target);
