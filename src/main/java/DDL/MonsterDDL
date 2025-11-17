@@ -1,0 +1,8 @@
+CREATE TABLE monster (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    hp INT NOT NULL,
+    damage INT NOT NULL,
+    skills VARCHAR(255),
+    floor INT UNIQUE NOT NULL
+);
