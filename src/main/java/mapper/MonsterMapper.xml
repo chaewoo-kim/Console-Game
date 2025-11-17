@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+    <!-- 층으로 몬스터 가져오기 -->
+    <entry key="selectMonsterByFloor">
+        SELECT
+        name,
+        hp,
+        damage,
+        skills,
+        floor
+        FROM monster
+        WHERE floor = ?
+    </entry>
+
+    <!-- 몬스터 HP 업데이트 -->
+    <entry key="updateMonsterHp">
+        UPDATE monster
+        SET hp = ?
+        WHERE name = ?
+    </entry>
+
+    <!-- 몬스터 스킬 가져오기 -->
+    <entry key="selectMonsterSkills">
+        SELECT skill_name
+        FROM skill
+        WHERE monster_id = ?
+    </entry>
+
+</properties>
