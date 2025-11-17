@@ -68,10 +68,20 @@ public class Player {
 
 
 
-    // ->  물약 사용 시 체력 완전 회복
-    public void usePotion() {
-        this.hp = this.maxHp;
-        System.out.println(name + "의 HP가 " + maxHp + "로 회복되었습니다.");
+    public void usePotion(Player player) {
+        // -> SUPPLIES 리스트에서 포션 찾기 : ItermType이 String 타입이고, getType도 String을 반환하기떄문이다.
+        Item potion = inventoryController.selectByName("hp 회복 포션");
+
+        // 포션이 있으면 사용, 없으면 메시지 출력
+        if (potion != null) {
+            this.hp = this.maxHp;
+            inventoryController.deleteByName("hp 회복 포션");
+            System.out.println(name + "이(가) " + potion.getName() + "을(를) 사용했습니다.");
+            System.out.println(name + "의 HP가 " + maxHp + "로 회복되었습니다.");
+            playerController.updatePlayer(player);
+        } else {
+            System.out.println(name + "의 인벤토리에 포션이 없습니다.");
+        }
     }
 
     // -> 아이템 추가 메서드(무기, 장비, 소모품 구분)
@@ -398,18 +408,14 @@ public class Player {
     }
 
 
-    public boolean isHavePotion(Player player) {
-        List<Item> litem = player.getInventory();
-        Iterator<Item> iterator = litem.iterator();
-
-        while (iterator.hasNext()) {
-            Item item = iterator.next();
-            if (item.getType().equals("SUPPLY")) {
-                iterator.remove();
+    public boolean isHavePotion(Player player){
+        List<Item> litem=player.getInventory();
+        for(Item item:litem){
+            if("SUPPLY".equals(item.getType())){
+                litem.remove(item);
                 return true;
             }
         }
         return false;
     }
-
 }

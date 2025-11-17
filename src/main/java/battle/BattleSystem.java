@@ -79,7 +79,7 @@ public class BattleSystem {
             if (player.isHavePotion(player)) {
                 //물약이 있다면
                 System.out.println("물약을 소모합니다.");
-                player.usePotion();
+                player.usePotion(player);
                 playerController.updatePlayer(player);
                 player.printStatus();
                 monster.printStatus();

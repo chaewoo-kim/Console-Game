@@ -116,4 +116,40 @@ public class InventoryRepository {
 
         return result;
     }
+
+    public Item selectByName(Connection con, String name) {
+
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Item item = null;
+
+        try {
+            prop.loadFromXML(new FileInputStream("src/main/java/mapper/ConsoleGameMapper.xml"));
+            String sql = prop.getProperty("selectByNameInventory");
+            pstmt = con.prepareStatement(sql);
+
+            pstmt.setString(1, name);
+
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                item = new Item(
+                        rs.getString("name"),
+                        rs.getInt("cost"),
+                        rs.getString("category"),
+                        rs.getInt("value")
+                );
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+
+        return item;
+    }
 }

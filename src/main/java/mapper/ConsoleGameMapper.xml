@@ -193,4 +193,10 @@
     <entry key="deleteAllArmor">
         DELETE FROM ARMOR
     </entry>
+
+    <entry key="selectByNameInventory">
+        SELECT *
+          FROM INVENTORY
+         WHERE name = ?
+    </entry>
 </properties>

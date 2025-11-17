@@ -50,4 +50,11 @@ public class InventoryController {
 
         close(con);
     }
+
+    public Item selectByName(String name) {
+
+        Item item = inventoryService.selectByName(name);
+
+        return item;
+    }
 }

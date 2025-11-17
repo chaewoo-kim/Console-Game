@@ -41,4 +41,13 @@ public class InventoryService {
 
         return result;
     }
+
+    public Item selectByName(String name) {
+
+        Connection con = getConnection();
+
+        Item item = inventoryRepository.selectByName(con, name);
+
+        return item;
+    }
 }
