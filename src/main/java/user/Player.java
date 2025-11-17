@@ -8,6 +8,7 @@ import monster.Monster;
 
 import javax.security.auth.callback.CallbackHandler;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -397,14 +398,18 @@ public class Player {
     }
 
 
-    public boolean isHavePotion(Player player){
-        List<Item> litem=player.getInventory();
-        for(Item item:litem){
-            if(item.getType().equals("SUPPLY")){
-                litem.remove(item);
+    public boolean isHavePotion(Player player) {
+        List<Item> litem = player.getInventory();
+        Iterator<Item> iterator = litem.iterator();
+
+        while (iterator.hasNext()) {
+            Item item = iterator.next();
+            if (item.getType().equals("SUPPLY")) {
+                iterator.remove();
                 return true;
             }
         }
         return false;
     }
+
 }

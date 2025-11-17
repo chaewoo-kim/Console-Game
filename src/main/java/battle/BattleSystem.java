@@ -48,10 +48,9 @@ public class BattleSystem {
         int n=monster.getSkills().length;
         String skillUsed = monster.getSkills()[(int)(Math.random()*n)];
         System.out.println(monster.getName() + "의 " + skillUsed + " 사용!");
-        // 섹시 보이스 스킬인 경우 특별 처리
         if(skillUsed.equals("섹시 보이스")) {
             restBattle();
-            return; // 데미지는 주지 않고 기절 효과만
+            return;
         }
         player.takeDamage(monster, player);
         playerController.updatePlayer(player);
@@ -77,7 +76,6 @@ public class BattleSystem {
             monster.printStatus();
             isContinue = true;
         }else if(choice == 2) {
-            //TODO:물약 소모
             if (player.isHavePotion(player)) {
                 //물약이 있다면
                 System.out.println("물약을 소모합니다.");
