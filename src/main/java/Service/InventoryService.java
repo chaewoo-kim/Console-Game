@@ -48,6 +48,8 @@ public class InventoryService {
 
         Item item = inventoryRepository.selectByName(con, name);
 
+        close(con);
+
         return item;
     }
 }

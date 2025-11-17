@@ -76,18 +76,11 @@ public class BattleSystem {
             monster.printStatus();
             isContinue = true;
         }else if(choice == 2) {
-            if (player.isHavePotion(player)) {
-                //물약이 있다면
-                System.out.println("물약을 소모합니다.");
-                player.usePotion(player);
-                playerController.updatePlayer(player);
-                player.printStatus();
-                monster.printStatus();
-                isContinue = true;
-            } else {
-                System.out.println("물약이 없습니다.");
-
-            }
+            player.usePotion(player);
+            playerController.updatePlayer(player);
+            player.printStatus();
+            monster.printStatus();
+            isContinue = true;
         }if(isContinue)break;
         }while(true);
 

@@ -69,13 +69,12 @@ public class Player {
 
 
     public void usePotion(Player player) {
-        // -> SUPPLIES 리스트에서 포션 찾기 : ItermType이 String 타입이고, getType도 String을 반환하기떄문이다.
-        Item potion = inventoryController.selectByName("hp 회복 포션");
+        Item potion = inventoryController.selectByName("hp 회복 물약");
 
         // 포션이 있으면 사용, 없으면 메시지 출력
         if (potion != null) {
             this.hp = this.maxHp;
-            inventoryController.deleteByName("hp 회복 포션");
+            inventoryController.deleteByName("hp 회복 물약");
             System.out.println(name + "이(가) " + potion.getName() + "을(를) 사용했습니다.");
             System.out.println(name + "의 HP가 " + maxHp + "로 회복되었습니다.");
             playerController.updatePlayer(player);
