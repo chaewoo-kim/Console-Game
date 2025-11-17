@@ -121,7 +121,8 @@ public class Monster {
     }
 
     public void printStatus() {
-        System.out.println(name + " HP: " + hp + "/" + maxHp);
+        System.out.println("****** " + name + " HP: " + hp + "/" + maxHp + " ******");
+        System.out.println("****************************");
     }
 
     public String getName() { return name; }
@@ -132,6 +133,6 @@ public class Monster {
 
     @Override
     public String toString() {
-        return name + "가 나타났다!";
+        return "**** " + name + "가 나타났다! ****";
     }
 }

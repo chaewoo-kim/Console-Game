@@ -5,6 +5,7 @@ import View.ShopView;
 import battle.BattleSystem;
 import items.Shop;
 import monster.*;
+import story.StoryText;
 import user.Job;
 import user.Player;
 import java.util.Scanner;
@@ -23,6 +24,7 @@ public class GameManager {
     private BattleSystem battleSystem;
     private ShopView shopView;
     private PlayerController playerController;
+    private StoryText storyText;
 
     public GameManager() {
         scanner = new Scanner(System.in);
@@ -38,6 +40,7 @@ public class GameManager {
         playerController.insertPlayer(player);
         player.printStatus();
         shopView = new ShopView();
+        storyText = new StoryText();
 
         while(stage <= 5) {
             System.out.println("\n현재 스테이지: " + stage);
@@ -57,7 +60,9 @@ public class GameManager {
     private void progressStage() {
         switch(stage) {
             case 1:
-                System.out.println("1층: 모험가로 시작합니다.");
+                System.out.println(storyText.getBackground());
+                System.out.println(storyText.getBeforeFirstFloor());
+                System.out.println(storyText.getNowFirstFloor());
                 Monster m1 = Monster.selectMonsterByFloor(stage);
                 battleSystem = new BattleSystem(player, m1, stage);
                 battleSystem.startBattle();
@@ -65,6 +70,8 @@ public class GameManager {
                 player.levelUp();
                 break;
             case 2:
+                System.out.println(storyText.getBeforeSecondFloor());
+                System.out.println(storyText.getNowSecondFloor());
                 Monster m2 = Monster.selectMonsterByFloor(stage);
                 battleSystem = new BattleSystem(player, m2, stage);
                 battleSystem.startBattle();
@@ -74,6 +81,9 @@ public class GameManager {
                 player.levelUp();
                 break;
             case 3:
+                System.out.println(storyText.getAfterSecondFloor());
+                System.out.println(storyText.getBeforeThirdFloor());
+                System.out.println(storyText.getNowThirdFloor());
                 Monster m3 = Monster.selectMonsterByFloor(stage);
                 battleSystem = new BattleSystem(player, m3, stage);
                 battleSystem.startBattle();
@@ -83,6 +93,9 @@ public class GameManager {
                 player.levelUp();
                 break;
             case 4:
+                System.out.println(storyText.getAfterThirdFloor());
+                System.out.println(storyText.getBeforeFourthFloor());
+                System.out.println(storyText.getNowFourthFloor());
                 Monster m4 = Monster.selectMonsterByFloor(stage);
                 battleSystem = new BattleSystem(player, m4, stage);
                 battleSystem.startBattle();
@@ -91,13 +104,14 @@ public class GameManager {
                 player.levelUp();
                 break;
             default:
+                System.out.println(storyText.getAfterFourthFloor());
+                System.out.println(storyText.getNowFifthFloor());
                 Monster m5 = Monster.selectMonsterByFloor(stage);
                 battleSystem = new BattleSystem(player, m5, stage);
                 battleSystem.startBattle();
                 if  (player.getHp() <= 0) break;
-                shopView.startShop(player);
-                player.levelUp();
-                System.out.println(stage + "층: 스테이지 진행 중...");
+                System.out.println(storyText.getAfterFifthFloor());
+                System.out.println(storyText.getFinalText());
                 break;
         }
         player.printStatus();

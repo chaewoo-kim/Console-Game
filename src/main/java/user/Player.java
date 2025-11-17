@@ -271,7 +271,8 @@ public class Player {
     }
 
     public void printStatus() {     // -> 플레이어의 현재 상태(닉네임, 레벨, hp, mp, 직업, 스킬)를 알 수 있음.
-        System.out.println("닉네임: " + name);
+        System.out.println("****************************");
+        System.out.println(name);
         System.out.println("LEVEL: " + level);
         System.out.println("HP : " + hp + "/" + maxHp);
         System.out.println("MP : " + mp + "/" + maxMp);
@@ -279,6 +280,7 @@ public class Player {
         if (skill != null) {
             System.out.println("스킬: " + skill);
         }
+        System.out.println("****************************");
     }
 
 

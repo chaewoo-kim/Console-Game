@@ -36,18 +36,15 @@ public class BattleSystem {
                 System.out.println(player.getName()+"은 아직 잠에서 깨어나지 못 했습니다...");
                 playerStunned = false;
             }
-            System.out.println("====================================================");
         }
         displayBattleResult();
     }
 
     private void performMonsterAttack() {
         //2. 몬스터 공격
-        monster.printStatus();
-        player.printStatus();
         int n=monster.getSkills().length;
         String skillUsed = monster.getSkills()[(int)(Math.random()*n)];
-        System.out.println(monster.getName() + "의 " + skillUsed + " 사용!");
+        System.out.println("**** " + monster.getName() + "의 " + skillUsed + " 사용! ****");
         if(skillUsed.equals("섹시 보이스")) {
             restBattle();
             return;
@@ -55,7 +52,6 @@ public class BattleSystem {
         player.takeDamage(monster, player);
         playerController.updatePlayer(player);
         player.printStatus();
-        monster.printStatus();
     }
 
     private void performPlayerTurn() {
@@ -63,7 +59,6 @@ public class BattleSystem {
         Scanner scanner = new Scanner(System.in);
         boolean isContinue = false;
         do{
-        player.printStatus();
         monster.printStatus();
         System.out.println("1. 공격 , 2. 물약회복");
         //3-1. mp소모 공격
