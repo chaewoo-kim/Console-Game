@@ -14,15 +14,16 @@ import static common.JDBCTemplate.close;
 
 public class ItemRepository {
 
+    Properties prop = new Properties();
+
     public Item selectItemByName(Connection con, String name) {
 
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        Properties prop = new Properties();
         Item item = null;
 
         try {
-            prop.loadFromXML(new FileInputStream("src/main/java/mapper/MenuMapper.xml"));
+            prop.loadFromXML(new FileInputStream("src/main/java/mapper/ConsoleGameMapper.xml"));
             String sql = prop.getProperty("selectItemByName");
             pstmt = con.prepareStatement(sql);
 
@@ -56,11 +57,10 @@ public class ItemRepository {
 
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        Properties prop = new Properties();
         Item item = null;
 
         try {
-            prop.loadFromXML(new FileInputStream("src/main/java/mapper/MenuMapper.xml"));
+            prop.loadFromXML(new FileInputStream("src/main/java/mapper/ConsoleGameMapper.xml"));
             String sql = prop.getProperty("selectItemByIndex");
             pstmt = con.prepareStatement(sql);
 
@@ -93,11 +93,10 @@ public class ItemRepository {
 
         Statement stmt = null;
         ResultSet rs = null;
-        Properties prop = new Properties();
         List<Item> itemList = new ArrayList<>();
 
         try {
-            prop.loadFromXML(new FileInputStream("src/main/java/mapper/MenuMapper.xml"));
+            prop.loadFromXML(new FileInputStream("src/main/java/mapper/ConsoleGameMapper.xml"));
             String sql = prop.getProperty("selectAllItems");
             stmt = con.createStatement();
 
@@ -129,7 +128,6 @@ public class ItemRepository {
         PreparedStatement pstmt = null;
         Statement maxStmt = null;
         ResultSet maxRs = null;
-        Properties prop = new Properties();
         int result = 0;
 
         try {
@@ -137,7 +135,7 @@ public class ItemRepository {
                 return -1;
             }
 
-            prop.loadFromXML(new FileInputStream("src/main/java/mapper/MenuMapper.xml"));
+            prop.loadFromXML(new FileInputStream("src/main/java/mapper/ConsoleGameMapper.xml"));
             String sql = prop.getProperty("insertItem");
             pstmt = con.prepareStatement(sql);
             String maxSql = prop.getProperty("selectMaxId");
@@ -161,6 +159,32 @@ public class ItemRepository {
             throw new RuntimeException(e);
         } finally {
             close(pstmt);
+            close(maxRs);
+            close(maxStmt);
+        }
+
+        return result;
+    }
+
+    public int deleteAll(Connection con) {
+
+        Statement stmt = null;
+        int result = 0;
+
+        try {
+
+            prop.loadFromXML(new FileInputStream("src/main/java/mapper/ConsoleGameMapper.xml"));
+            String sql = prop.getProperty("deleteInventory");
+            stmt = con.createStatement();
+
+            result = stmt.executeUpdate(sql);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            close(stmt);
         }
 
         return result;

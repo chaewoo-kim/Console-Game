@@ -28,10 +28,10 @@ public class ShopView {
                     shopController.buy(player, shop); break;
                 case 2:
                     shopController.sell(player, shop); break;
-//                case 3:
-//                    shopController.equipment(player, shop); break;
-//                case 4:
-//                    shopController.inventory(player, shop); break;
+                case 3:
+                    shopController.equipment(player, shop); break;
+                case 4:
+                    shopController.inventory(player, shop); break;
                 default:
                     System.out.println("**** 올바른 숫자를 입력하시오 ****"); break;
             }

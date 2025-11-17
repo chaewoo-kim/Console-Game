@@ -1,5 +1,6 @@
 package battle;
 
+import Controller.PlayerController;
 import acquire.ItemAcquire;
 import monster.Monster;
 import user.Player;
@@ -11,12 +12,14 @@ public class BattleSystem {
     private Monster monster;
     private int stage;
     private boolean playerStunned;
+    private PlayerController playerController;
 
     public BattleSystem(Player player, Monster monster, int stage) {
         this.player = player;
         this.monster = monster;
         this.stage = stage;
         this.playerStunned = false;
+        this.playerController = new PlayerController();
     }
 
     public void startBattle() {
@@ -50,6 +53,7 @@ public class BattleSystem {
             return;
         }
         player.takeDamage(monster, player);
+        playerController.updatePlayer(player);
         player.printStatus();
         monster.printStatus();
     }
@@ -65,7 +69,8 @@ public class BattleSystem {
         //3-1. mp소모 공격
         int choice = scanner.nextInt();
         if(choice == 1) {
-            player.useSkill();
+            player.useSkill(player);
+            playerController.updatePlayer(player);
             monster.takeDamage(1);
             player.printStatus();
             monster.printStatus();
@@ -75,6 +80,7 @@ public class BattleSystem {
                 //물약이 있다면
                 System.out.println("물약을 소모합니다.");
                 player.usePotion();
+                playerController.updatePlayer(player);
                 player.printStatus();
                 monster.printStatus();
                 isContinue = true;
@@ -90,6 +96,7 @@ public class BattleSystem {
     public void clearFloor() {  // -> 층을 클리어하면 레벨 1증가하고 현재상태를 갱신한다.
         System.out.println("층 클리어! 다음 층으로...");
         player.levelUp();
+        playerController.updatePlayer(player);
     }
 
     private void displayBattleResult() {
@@ -105,6 +112,7 @@ public class BattleSystem {
         System.out.println();
         System.out.println(player.getName()+"은 잠이 들어버렸다..!");
         playerStunned = true;
+        playerController.updatePlayer(player);
         player.printStatus();
         monster.printStatus();
     }
