@@ -26,4 +26,13 @@ public class ArmorService {
 
         return result;
     }
+
+    public int deleteAll(Connection con) {
+
+        int result = 0;
+
+        result = armorRepository.deleteAll(con);
+
+        return result;
+    }
 }

@@ -50,14 +50,15 @@ public class ShopController {
    public void equipment(Player player, Shop shop) {
 
        int input = 0;
-
+       Item weapon = weaponController.select("WEAPON");
+       Item armor = weaponController.select("ARMOR");
        while (input != -1) {
            // player 객체의 weapon, armor 출력
            System.out.println("**** 착용 장비 ****");
            if (player.getWeapons().isEmpty()) System.out.println("**** 무기: 없음 ****");
-           else System.out.println("**** 무기: " + player.getWeapons().get(0).getName() + " / 능력치: " + player.getWeapons().get(0).getValue() + " ****");
+           else System.out.println("**** 무기: " + weapon.getName() + " / 능력치: " + weapon.getValue() + " ****");
            if (player.getArmors().isEmpty()) System.out.println("**** 방어구: 없음 ****");
-           else System.out.println("**** 방어구: " + player.getArmors().get(0).getName() + "/ 능력치: " + player.getArmors().get(0).getValue() + " ****");
+           else System.out.println("**** 방어구: " + armor.getName() + "/ 능력치: " + armor.getValue() + " ****");
 
            System.out.println("**** 나가기: -1 ****");
            System.out.print("입력: ");
@@ -78,7 +79,10 @@ public class ShopController {
                System.out.println("**** 비어있음 ****");
            } else {
                for (int i = 0; i < inventoryList.size(); i++) {
-                   System.out.println("**** " + inventoryList.get(i).getName() + " / " + player.getInventory().get(i).getCost() + "원 / " + player.getInventory().get(i).getValue() + " ****");
+//                   if (inventoryList.get(i).getName().equals(player.getWeapons().get(0).getName()) || inventoryList.get(i).getName().equals(player.getArmors().get(0).getName())) {
+//                       continue;
+//                   }
+                   System.out.println("**** " + inventoryList.get(i).getName() + " / " + inventoryList.get(i).getCost() + "원 / " + inventoryList.get(i).getValue() + " ****");
                }
                System.out.println("**** 장비를 변경하시겠습니까? ****");
                System.out.print("Y/N: ");
@@ -116,23 +120,25 @@ public class ShopController {
        for (int i = 0; i < inventoryList.size(); i++) {
            if (inventoryList.get(i).getName().equals(input)) {
                invenItem = inventoryList.get(i);
-           } else {
-               System.out.println("*** 잘못된 이름입니다. 장비를 변경하지 않습니다 ****");
-               return;
            }
+       }
+
+       if (invenItem == null) {
+           System.out.println("*** 잘못된 이름입니다. 장비를 변경하지 않습니다 ****");
+           return;
        }
 
        inventoryController.deleteByName(invenItem.getName());
 
        if (input.contains("무기")) {
            equipItem = weaponController.select("WEAPON");
-           inventoryController.insertItem(equipItem);
-           inventoryController.deleteByName(equipItem.getName());
+           weaponController.deleteByName(equipItem.getName());
+           inventoryController.insertItem(equipItem);   // 인벤에 안 들어가고 계속 장비에 쌓이는거 해결해야함
            weaponController.insertItem(invenItem);
        } else if(input.contains("방어구")) {
            equipItem = weaponController.select("ARMOR");
+           armorController.deleteByName(equipItem.getName());
            inventoryController.insertItem(equipItem);
-           inventoryController.deleteByName(invenItem.getName());
            armorController.insertItem(invenItem);
        } else {
            System.out.println("**** 무기와 방어구를 제외한 아이템은 장착할 수 없습니다 ****");

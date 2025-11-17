@@ -1,12 +1,12 @@
 package user;
 
-import Controller.ItemController;
-import Controller.PlayerController;
+import Controller.*;
 import items.Item;
 import items.ItemType;
 import items.Items;
 import monster.Monster;
 
+import javax.security.auth.callback.CallbackHandler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -28,6 +28,9 @@ public class Player {
     private List<Item> inventory; // -> 인벤토리
     private ItemController itemController;
     private PlayerController playerController;
+    private WeaponController weaponController;
+    private ArmorController armorController;
+    private InventoryController inventoryController;
     private int result;
 
     Items items = new  Items();
@@ -53,8 +56,13 @@ public class Player {
         this.inventory = new ArrayList<>();
         this.itemController = new ItemController();
         this.playerController = new PlayerController();
+        this.weaponController = new WeaponController();
+        this.armorController = new ArmorController();
+        this.inventoryController = new InventoryController();
         itemController.deleteAll("INVENTORY");
         playerController.deleteAll("PLAYER");
+        weaponController.deleteAll();
+        armorController.deleteAll();
     }
 
 
@@ -113,7 +121,10 @@ public class Player {
                 maxMp = 20;
                 skill = "대가리뽀사기";
                 Item warriorWeapon = itemController.selectItemByName("전사 기본무기");
-                weapons.add(warriorWeapon);
+                Item weaponItem = weaponController.select("WEAPON");
+                inventoryController.insertItem(weaponItem);
+                weaponController.insertItem(warriorWeapon);
+                weaponController.deleteByName(weaponItem.getName());
                 System.out.println("전사 직업 전용 무기 착용: " + warriorWeapon.getName());
                 break;
             case "ARCHER":
@@ -121,7 +132,10 @@ public class Player {
                 maxMp = 30;
                 skill = "주몽 원샷";
                 Item archerWeapon = itemController.selectItemByName("궁수 기본무기");
-                weapons.add(archerWeapon);
+                Item archerItem = weaponController.select("WEAPON");
+                inventoryController.insertItem(archerItem);
+                weaponController.insertItem(archerWeapon);
+                weaponController.deleteByName(archerItem.getName());
                 System.out.println("궁수 직업 전용 무기 착용: " + archerWeapon.getName());
                 break;
             case "MAGE":
@@ -129,7 +143,10 @@ public class Player {
                 maxMp = 50;
                 skill = "아이스 에이지";
                 Item mageWeapon = itemController.selectItemByName("마법사 기본무기");
-                weapons.add(mageWeapon);
+                Item mageItem = weaponController.select("WEAPON");
+                inventoryController.insertItem(mageItem);
+                weaponController.insertItem(mageWeapon);
+                weaponController.deleteByName(mageItem.getName());
                 System.out.println("마법사 직업 전용 무기 착용: " + mageWeapon.getName());
                 break;
             default:
@@ -154,7 +171,11 @@ public class Player {
                     this.job = "DRAGON_WOO";
                     this.skill = "용의 콧물";
                     Item dragonWooWeapon = itemController.selectItemByName("드래곤 우 히든무기");
+                    Item weapon = weaponController.select("WEAPON");
                     weapons.add(dragonWooWeapon);
+                    weaponController.deleteAll();
+                    weaponController.insertItem(dragonWooWeapon);
+                    inventoryController.insertItem(weapon);
                     System.out.println("히든직업 드래곤 우로 업그레이드!");
                     System.out.println("히든직업 전용 무기 착용: " + dragonWooWeapon.getName());
                     break;
@@ -162,7 +183,11 @@ public class Player {
                     this.job = "CHAEU_CHOW";
                     this.skill = "그의 눈빛";
                     Item chaeuChowWeapon = itemController.selectItemByName("채우차우 히든무기");
+                    Item weapon1 = weaponController.select("WEAPON");
                     weapons.add(chaeuChowWeapon);
+                    weaponController.deleteAll();
+                    weaponController.insertItem(chaeuChowWeapon);
+                    inventoryController.insertItem(weapon1);
                     System.out.println("히든직업 채우차우로 업그레이드!");
                     System.out.println("히든직업 전용 무기 착용: " + chaeuChowWeapon.getName());
                     break;
@@ -170,7 +195,11 @@ public class Player {
                     this.job = "LEE_SANGJUN";
                     this.skill = "배꼽 탈취";
                     Item leeSangjunWeapon = itemController.selectItemByName("이상준 히든무기");
+                    Item weapon2 = weaponController.select("WEAPON");
                     weapons.add(leeSangjunWeapon);
+                    weaponController.deleteAll();
+                    weaponController.insertItem(leeSangjunWeapon);
+                    inventoryController.insertItem(weapon2);
                     System.out.println("히든직업 개그맨 이상준으로 업그레이드!");
                     System.out.println("히든직업 전용 무기 착용: " + leeSangjunWeapon.getName());
                     break;
@@ -187,6 +216,8 @@ public class Player {
     public void unequipWeapon(Item weapon) {
         if (weapons.remove(weapon)) {   // 착용 무기  제거
             inventory.add(weapon);      // 인벤토리로 이동
+            weaponController.deleteByName(weapon.getName());
+            inventoryController.insertItem(weapon);
             System.out.println(weapon.getName() + " 무기를 착용 해제하고 인벤토리로 이동했습니다.");
         } else {
             System.out.println("해당 무기를 착용하고 있지 않습니다.");

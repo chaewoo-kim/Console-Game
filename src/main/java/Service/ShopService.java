@@ -78,7 +78,13 @@ public class ShopService {
 
                     if (itemName.equals("-1")) return;
 
-                    target = itemController.selectItemByName(itemName);
+//                    target = itemController.selectItemByName(itemName);
+
+                    for (Item item : itemForBuy) {
+                        if (item.getName().equals(itemName)) {
+                            target = item;
+                        }
+                    }
 
                     if (target == null) {
                         System.out.println("**** 잘못 입력함 ****");
@@ -90,13 +96,13 @@ public class ShopService {
                         return;
                     } else {
                         System.out.println("**** 구매 완료 ****");
-                        // player 디비 사용으로 변경
-                        player.setCost(money -  target.getCost());
-//                        player.getInventory().add(target);
+                        player.setCost(player.getCost() -  target.getCost());
                         playerController.updatePlayer(player);
                         inventoryController.insertItem(target);
-                        itemForBuy.remove(target);
-                        break;
+                        if (itemForBuy.remove(target)) {
+                            System.out.println("삭제완료");
+                        }
+
                     }
 
                 } catch(IndexOutOfBoundsException e) {
@@ -118,18 +124,6 @@ public class ShopService {
 
     public void sell(Player player, Shop shop) {
 
-//        List<List<Item>> playItemList = new ArrayList<>();  // player 디비 사용으로 변경
-//        playItemList.add(player.getItemList());
-//        playItemList.add(player.getWeapons());
-//        playItemList.add(player.getArmors());
-//        playItemList.add(player.getInventory());
-        List<Item> playerInventoryList = inventoryController.selectAll();
-        Item nowWeapon = weaponController.select("WEAPON");
-        Item nowArmor = weaponController.select("ARMOR");
-        playerInventoryList.stream().forEach(item -> {
-            System.out.println(item.toString());
-        });
-        int money = player.getCost();
         int input = -1;
         int itemInput = 0;
         int categoryNum = 0;
@@ -137,6 +131,14 @@ public class ShopService {
         boolean isNoWeapon = true;
 
         while (input != 0) {
+
+            List<Item> playerInventoryList = inventoryController.selectAll();
+            Item nowWeapon = weaponController.select("WEAPON");
+            Item nowArmor = weaponController.select("ARMOR");
+            playerInventoryList.stream().forEach(item -> {
+                System.out.println(item.toString());
+            });
+            int money = player.getCost();
 
             if (playerInventoryList.isEmpty()) {
                 System.out.println("**** 판매할 물건 없음 ****");
@@ -166,10 +168,10 @@ public class ShopService {
                 System.out.println("**** 판매 후 교체할 방어구가 없습니다 ****");
             }
 
-            // 사용자 돈 감소
+            // 사용자 돈 증가
             playerInventoryList.stream().forEach(item -> {
                 if (item.getName().equals(itemName)) {
-                    player.setCost(money - item.getCost());
+                    player.setCost(money + item.getCost());
                 }
             });
             // 인벤토리에서 삭제
@@ -179,52 +181,6 @@ public class ShopService {
 
             System.out.println("**** 판매 완료 ****");
             System.out.println("**** 현재 보유 금액: " + player.getCost() + " ****");
-
-//            OUTER_LOOP:
-//            for (int i = 0; i < playerInventoryList.size(); i++) {
-//                for (int j = 0; j < playerInventoryList.get(i).size(); j++) {
-//                    if (playerInventoryList.get(i).get(j).getName().equals(itemName)) {
-//                        if (playerInventoryList.get(i).get(j).getName().contains("무기")) {
-//                            for (int k = 0; k < player.getInventory().size(); k++) {
-//                                if (player.getInventory().get(k).getName().contains("무기")) {
-//                                    isNoWeapon = false;
-//                                } else {
-//                                    isNoWeapon = true;
-//                                }
-//                            }
-//                        }
-//
-//                        if (isNoWeapon) {
-//                            System.out.println("**** 판매 후 교체할 무기가 없습니다 ****");
-//                            break OUTER_LOOP;
-//                        }
-//
-//                        switch (i) {
-//                            case 0:
-//                                player.setCost(player.getCost() + playItemList.get(i).get(j).getCost());
-//                                player.getItemList().remove(playItemList.get(i).get(j));
-//                                break;
-//                            case 1:
-//                                player.setCost(player.getCost() + playItemList.get(i).get(j).getCost());
-//                                player.getWeapons().remove(playItemList.get(i).get(j));
-//                                break;
-//                            case 2:
-//                                player.setCost(player.getCost() + playItemList.get(i).get(j).getCost());
-//                                player.getArmors().remove(playItemList.get(i).get(j));
-//                                break;
-//                            case 3:
-//                                player.setCost(player.getCost() + playItemList.get(i).get(j).getCost());
-//                                player.getSupplies().remove(playItemList.get(i).get(j));
-//                                break;
-//                            default:
-//                                break;
-//                        }
-//                        System.out.println("판매 완료");
-//                        System.out.println("현재 보유 금액: " + player.getCost());
-//                        break;
-//                    }
-//                }
-//            }
 
             System.out.println("추가 판매: 1, 판매 종료: 0");
             System.out.print("입력: ");

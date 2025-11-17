@@ -25,9 +25,9 @@ public class WeaponRepository {
         try {
             prop.loadFromXML(new FileInputStream("src/main/java/mapper/ConsoleGameMapper.xml"));
             if (tableName.equals("WEAPON")) {
-                sql = sql = prop.getProperty("selectWeapon");
+                sql = prop.getProperty("selectWeapon");
             } else if (tableName.equals("ARMOR")) {
-                sql = sql = prop.getProperty("selectArmor");
+                sql = prop.getProperty("selectArmor");
             }
 
             pstmt = con.prepareStatement(sql);
@@ -110,6 +110,31 @@ public class WeaponRepository {
             throw new RuntimeException(e);
         } finally {
             close(pstmt);
+        }
+
+        return result;
+    }
+
+    public int deleteAll(Connection con) {
+
+        Statement stmt = null;
+        int result = 0;
+        String sql = null;
+
+        try {
+            prop.loadFromXML(new FileInputStream("src/main/java/mapper/ConsoleGameMapper.xml"));
+            sql = prop.getProperty("deleteAllWeapons");
+
+            stmt = con.createStatement();
+
+            result =  stmt.executeUpdate(sql);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            close(stmt);
         }
 
         return result;

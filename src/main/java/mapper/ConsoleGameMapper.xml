@@ -185,4 +185,12 @@
         DELETE FROM ARMOR
          WHERE name = ?
     </entry>
+
+    <entry key="deleteAllWeapons">
+        DELETE FROM WEAPON
+    </entry>
+
+    <entry key="deleteAllArmor">
+        DELETE FROM ARMOR
+    </entry>
 </properties>

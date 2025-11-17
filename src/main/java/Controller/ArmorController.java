@@ -44,4 +44,21 @@ public class ArmorController {
 
         close(con);
     }
+
+    public void deleteAll() {
+
+        Connection con = getConnection();
+
+        int result = 0;
+
+        result = armorService.deleteAll(con);
+
+        if (result > 0) {
+            commit(con);
+        } else {
+            rollback(con);
+        }
+
+        close(con);
+    }
 }

@@ -67,4 +67,27 @@ public class ArmorRepository {
 
         return result;
     }
+
+    public int deleteAll(Connection con) {
+
+        Statement stmt = null;
+        int result = 0;
+
+        try {
+            prop.loadFromXML(new FileInputStream("src/main/java/mapper/ConsoleGameMapper.xml"));
+            String sql = prop.getProperty("deleteAllArmor");
+            stmt = con.createStatement();
+
+            result = stmt.executeUpdate(sql);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            close(stmt);
+        }
+
+        return result;
+    }
 }

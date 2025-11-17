@@ -1,8 +1,6 @@
 package acquire;
 
-import Controller.InventoryController;
-import Controller.ItemController;
-import Controller.PlayerController;
+import Controller.*;
 import Repository.ItemRepository;
 import items.Item;
 import items.ItemType;
@@ -14,6 +12,8 @@ public class ItemAcquire extends Item{
     ItemController itemController;
     PlayerController playerController;
     InventoryController inventoryController;
+    WeaponController weaponController;
+    ArmorController armorController;
 
     public ItemAcquire(Player player,int stage){
         Item item;
@@ -21,6 +21,8 @@ public class ItemAcquire extends Item{
         this.itemController = new ItemController();
         this.playerController = new PlayerController();
         this.inventoryController = new InventoryController();
+        this.weaponController = new WeaponController();
+        this.armorController = new ArmorController();
         switch (stage){
             case 1:
                 //1단계 몬스터를 잡으면 기본방어구와 몽둥이를 준다.
@@ -28,8 +30,10 @@ public class ItemAcquire extends Item{
                 item2=itemController.selectItemByName("담백한 상의");
                 player.addItem(item);
                 player.addItem(item2);
-                inventoryController.insertItem(item);
-                inventoryController.insertItem(item2);
+//                inventoryController.insertItem(item);
+//                inventoryController.insertItem(item2);
+                weaponController.insertItem(item);
+                armorController.insertItem(item2);
                 //돈도 줌
                 player.setCost(player.getCost()+200);
                 playerController.updatePlayer(player);
