@@ -8,10 +8,7 @@ import user.Job;
 import user.Player;
 import java.util.Scanner;
 
-/*
-*  게임의 흐름과 전반적인 게임 진행을 관리한다.
-*  단계별 진행, 입력 처리, 이벤트 호출 등을 조율한다.
-* */
+
 
 public class GameManager {
     public static void main(String[] args) {
@@ -58,13 +55,15 @@ public class GameManager {
         switch(stage) {
             case 1:
                 System.out.println("1층: 모험가로 시작합니다.");
-                battleSystem = new BattleSystem(player, new Floor1Boss(), stage);
+                Monster m1 = Monster.selectMonsterByFloor(stage);
+                battleSystem = new BattleSystem(player, m1, stage);
                 battleSystem.startBattle();
                 shopView.startShop(player);
                 player.levelUp();
                 break;
             case 2:
-                battleSystem = new BattleSystem(player, new Floor2Boss(), stage);
+                Monster m2 = Monster.selectMonsterByFloor(stage);
+                battleSystem = new BattleSystem(player, m2, stage);
                 battleSystem.startBattle();
                 if (player.getHp() <= 0) break;
                 handleJobSelection();
@@ -72,7 +71,8 @@ public class GameManager {
                 player.levelUp();
                 break;
             case 3:
-                battleSystem = new BattleSystem(player, new Floor3Boss(), stage);
+                Monster m3 = Monster.selectMonsterByFloor(stage);
+                battleSystem = new BattleSystem(player, m3, stage);
                 battleSystem.startBattle();
                 if (player.getHp() <= 0) break;
                 handleHiddenUpgrade();
@@ -80,14 +80,16 @@ public class GameManager {
                 player.levelUp();
                 break;
             case 4:
-                battleSystem = new BattleSystem(player, new Floor4Boss(), stage);
+                Monster m4 = Monster.selectMonsterByFloor(stage);
+                battleSystem = new BattleSystem(player, m4, stage);
                 battleSystem.startBattle();
                 if  (player.getHp() <= 0) break;
                 shopView.startShop(player);
                 player.levelUp();
                 break;
             default:
-                battleSystem = new BattleSystem(player, new Floor5Boss(), stage);
+                Monster m5 = Monster.selectMonsterByFloor(stage);
+                battleSystem = new BattleSystem(player, m5, stage);
                 battleSystem.startBattle();
                 if  (player.getHp() <= 0) break;
                 shopView.startShop(player);
