@@ -87,22 +87,19 @@ public class ShopService {
                     }
 
                     if (target == null) {
-                        System.out.println("**** 잘못 입력함 ****");
+                        System.out.println("********** 잘못 입력함 **********");
                         return;
                     }
 
                     if (target.getCost() > money) {
-                        System.out.println("**** 금액 부족 ****");
+                        System.out.println("********** 금액 부족 **********");
                         return;
                     } else {
-                        System.out.println("**** 구매 완료 ****");
+                        System.out.println("********** 구매 완료 **********");
                         player.setCost(player.getCost() -  target.getCost());
                         playerController.updatePlayer(player);
                         inventoryController.insertItem(target);
-                        if (itemForBuy.remove(target)) {
-                            System.out.println("삭제완료");
-                        }
-
+                        itemForBuy.remove(target);
                     }
 
                 } catch(IndexOutOfBoundsException e) {
@@ -135,9 +132,6 @@ public class ShopService {
             List<Item> playerInventoryList = inventoryController.selectAll();
             Item nowWeapon = weaponController.select("WEAPON");
             Item nowArmor = weaponController.select("ARMOR");
-            playerInventoryList.stream().forEach(item -> {
-                System.out.println(item.toString());
-            });
             int money = player.getCost();
 
             if (playerInventoryList.isEmpty()) {
@@ -148,12 +142,10 @@ public class ShopService {
             System.out.println("현재 돈: " + money);
 
             for (int i = 0; i < playerInventoryList.size(); i++) {
-                    System.out.println(
-                            " / 이름: " + playerInventoryList.get(i).getName() +
-                            " / 가격: " + playerInventoryList.get(i).getCost() +
-                            " / 능력치: "  + playerInventoryList.get(i).getValue()
-                    );
-                    System.out.println("=========================");
+                    System.out.println("******************************");
+                    System.out.println("***** 이름: " + playerInventoryList.get(i).getName() + "*****");
+                    System.out.println("***** 가격: " + playerInventoryList.get(i).getCost() + " *****");
+                    System.out.println("*****  능력치: "  + playerInventoryList.get(i).getValue() + " *****");
             }
             System.out.println("번호: -1 / 판매 종료");
 
@@ -179,11 +171,10 @@ public class ShopService {
             // 사용자 상태 업데이트
             playerController.updatePlayer(player);
 
-            System.out.println("**** 판매 완료 ****");
-            System.out.println("**** 현재 보유 금액: " + player.getCost() + " ****");
+            System.out.println("******** 판매 완료 ********");
+            System.out.println("현재 보유 금액: " + player.getCost());
 
             System.out.println("추가 판매: 1, 판매 종료: 0");
-            System.out.print("입력: ");
             try {
                 input = sc.nextInt();
                 sc.nextLine();

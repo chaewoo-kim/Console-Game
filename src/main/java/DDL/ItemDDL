@@ -1,0 +1,72 @@
+create table INVENTORY
+(
+    id int not null
+        primary key,
+    name varchar(20) null,
+    cost int null,
+    category varchar(20) null,
+    value int null,
+    constraint name
+        unique (name)
+);
+
+create table ITEMS
+(
+    id int null,
+    name varchar(20) not null
+        primary key,
+    cost int null,
+    category varchar(20) null,
+    value int null
+);
+
+create table PLAYER
+(
+    id int auto_increment
+        primary key,
+    name varchar(30) null,
+    level int null,
+    hp int null,
+    maxHp int null,
+    job varchar(20) null,
+    skill varchar(30) null,
+    mp int null,
+    maxMp int null,
+    cost int null
+);
+
+create table WEAPON
+(
+    id int not null
+        primary key,
+    name varchar(20) null,
+    cost int null,
+    category varchar(20) null,
+    value int null,
+    constraint name
+        unique (name)
+);
+
+create table armor
+(
+    id int not null
+        primary key,
+    name varchar(20) null,
+    cost int null,
+    category varchar(20) null,
+    value int null,
+    constraint name
+        unique (name)
+);
+
+create table supply
+(
+    id int not null
+        primary key,
+    name varchar(20) null,
+    cost int null,
+    category varchar(20) null,
+    value int null,
+    constraint name
+        unique (name)
+);
