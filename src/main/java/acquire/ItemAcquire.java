@@ -37,9 +37,9 @@ public class ItemAcquire extends Item{
                 //돈도 줌
                 player.setCost(player.getCost()+200);
                 playerController.updatePlayer(player);
-                System.out.println("************************************");
+                System.out.println("****************************");
                 System.out.println();
-                System.out.print("*\t"+item.getName()+", "+item2.getName()+", 200골드 획득!"+"\t*");
+                System.out.print("********\t"+item.getName()+", "+item2.getName()+", 200골드 획득!"+"\t********");
                 System.out.println();
 
                 break;
@@ -55,11 +55,11 @@ public class ItemAcquire extends Item{
                 inventoryController.insertItem(item);
                 inventoryController.insertItem(item2);
                 playerController.updatePlayer(player);
-                System.out.println("************************************");
+                System.out.println("****************************");
                 System.out.println();
                 System.out.print("*\t"+item.getName()+", "+item2.getName()+", 수상한 카드키, 200골드 획득!"+"\t*");
                 System.out.println();
-                System.out.println("************************************");
+                System.out.println("****************************");
                 break;
             case 3:
                 //3단계에서는
@@ -71,11 +71,11 @@ public class ItemAcquire extends Item{
                 inventoryController.insertItem(item);
                 inventoryController.insertItem(item2);
                 playerController.updatePlayer(player);
-                System.out.println("************************************");
+                System.out.println("****************************");
                 System.out.println();
                 System.out.print("*\t"+item.getName()+", "+item2.getName()+", 200골드 획득!"+"\t*");
                 System.out.println();
-                System.out.println("************************************");
+                System.out.println("****************************");
                 break;
             case 4:
                 player.setCost(player.getCost()+200);
@@ -86,11 +86,11 @@ public class ItemAcquire extends Item{
                 inventoryController.insertItem(item);
                 inventoryController.insertItem(item2);
                 playerController.updatePlayer(player);
-                System.out.println("************************************");
+                System.out.println("****************************");
                 System.out.println();
                 System.out.print("*\t"+item.getName()+", "+item2.getName()+", 200골드 획득!"+"\t*");
                 System.out.println();
-                System.out.println("************************************");
+                System.out.println("****************************");
                 break;
             case 5:
                 player.setCost(player.getCost()+200);
@@ -101,11 +101,11 @@ public class ItemAcquire extends Item{
                 inventoryController.insertItem(item);
                 inventoryController.insertItem(item2);
                 playerController.updatePlayer(player);
-                System.out.println("************************************");
+                System.out.println("****************************");
                 System.out.println();
                 System.out.print("*\t"+item.getName()+", "+item2.getName()+", 200골드 획득!"+"\t*");
                 System.out.println();
-                System.out.println("************************************");
+                System.out.println("****************************");
                 break;
 
         }
